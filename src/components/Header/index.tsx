@@ -1,11 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Input, Avatar } from 'antd';
+import { SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { observer } from 'mobx-react';
+import { ShowLoginModal }from '../Login/index';
 import './index.less';
 
+@observer
 class Header extends React.Component {
   state = {
     onC: 0,
     sIndex: 0,
+    showModal: false,
+    isLogin: false,
   }
 
   changeI = (_e: any, index: number) => this.setState({ onC: index })
@@ -30,7 +37,7 @@ class Header extends React.Component {
       <header className="header">
         <div className="box">
           <div className="logo">
-            <Link to={'/'}>林虓云音乐</Link>
+            <Link onClick={() => { this.setState({ onC: 0 }) }} to={'/'}>林虓云音乐</Link>
           </div>
           <ul className="nav">
             {
@@ -50,9 +57,21 @@ class Header extends React.Component {
                 </li>
               })
             }
-
           </ul>
-
+          <div className="tools">
+            <span className="avatar-item">
+              {
+                this.state.isLogin ? <>
+                  <Avatar icon={<UserOutlined />} />
+                  <i>2</i>
+                </> : <em className="login-btn" onClick={() => { ShowLoginModal() }}>登陆</em>
+              }
+            </span>
+            <Link className="create-c" to="">创作者中心</Link>
+            <div className="search">
+              <Input className="ser-i" prefix={<SearchOutlined />} placeholder="音乐/视频/用户/电台" />
+            </div>
+          </div>
         </div>
         <div className="clear"></div>
         <div className={`${this.state.onC === 0 ? 'line' : 'line-c'}`}>
@@ -62,8 +81,8 @@ class Header extends React.Component {
                 {
                   sMenu.map((item, index) => {
                     return (
-                      <li>
-                        <Link onClick={() => this.setState({ sIndex: index })} to={item.path}><em className={this.state.sIndex === index ? 'cho-h2' : ''}>{item.name}</em></Link>
+                      <li key={index}>
+                        <Link onClick={() => this.setState({ sIndex: index })} to={item.path}><strong className={this.state.sIndex === index ? 'cho-h2' : ''}>{item.name}</strong></Link>
                       </li>
                     )
                   })

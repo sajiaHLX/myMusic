@@ -1,139 +1,248 @@
 .header {
-    width: 100%;
-    position: relative;
-    z-index: 1000;
-    box-sizing: border-box;
-    background: #242424;
+  width: 100%;
+  position: relative;
+  z-index: 1000;
+  box-sizing: border-box;
+  background: #242424;
 
-    .box {
-        height: 70px;
-        width: 1100px;
-        margin: 0 auto;
-        border-bottom: 1px solid #000;
+  .box {
+    height: 70px;
+    width: 1100px;
+    margin: 0 auto;
+    border-bottom: 1px solid #000;
 
-        .logo {
-            float: left;
-            width: 176px;
-            height: 69px;
-            background-position: 0 0;
-            background: url(../../assets/topbar.png) no-repeat;
+    .logo {
+      float: left;
+      width: 176px;
+      height: 69px;
+      background-position: 0 0;
+      background: url(../../assets/topbar.png) no-repeat;
 
-            a {
-                width: 157px;
-                height: 100%;
-                padding-right: 20px;
-                text-indent: -9999px;
-            }
-        }
-
-        .nav {
-            float: left;
-            position: relative;
-
-            li {
-                float: left;
-                height: 70px;
-                position: relative;
-
-                a {
-                    display: block;
-                    box-sizing: border-box;
-                    color: #cccccc;
-                    line-height: 70px;
-                    padding: 0 19px;
-                }
-            }
-        }
-
-        .nav::after {
-            content: '';
-            display: block;
-            width: 28px;
-            height: 19px;
-            position: absolute;
-            top: 21px;
-            right: -20px;
-            background: url(../../assets/topbar.png) no-repeat;
-            background-position: -190px 0;
-        }
-
-        .nav a:hover,
-        .cho a {
-            background: #000;
-            text-decoration: none;
-            color: #fff !important;
-        }
-
-        .cho-s {
-            width: 12px;
-            height: 7px;
-            display: block;
-            position: absolute;
-            top: 65px;
-            left: 50%;
-            margin-left: -6px;
-            background: url(../../assets/topbar.png) no-repeat;
-            background-position: -105px -70px;
-            background-size: 120px auto;
-            overflow: hidden;
-        }
-    }
-
-    .line {
-        z-index: 1001;
-        height: 35px;
-        box-sizing: border-box;
-        background-color: #C20C0C;
-        border-bottom: 1px solid #a40011;
-        margin-top: 1px;
-    }
-
-    .line-c {
-        z-index: 1001;
-        height: 5px;
-        box-sizing: border-box;
-        background-color: #C20C0C;
-        border-bottom: 1px solid #a40011;
-        margin-top: 1px;
-    }
-
-    .header-2 {
-        clear: both;
-        width: 100%;
+      a {
+        width: 157px;
         height: 100%;
-
-        ul {
-            width: 1100px;
-            height: 100%;
-            margin: 0 auto;
-            padding-left: 180px;
-
-            li {
-                float: left;
-                height: 34px;
-                line-height: 34px;
-
-                a {
-                    color: #fff;
-                    text-decoration: none;
-                    cursor: pointer;
-
-                    em {
-                        font-style: normal;
-                        display: inline-block;
-                        height: 20px;
-                        padding: 0 13px;
-                        margin: 7px 17px 0;
-                        line-height: 21px;
-                    }
-
-                    em:hover,
-                    .cho-h2 {
-                        border-radius: 20px;
-                        background: #9B0909;
-                    }
-                }
-            }
-        }
+        padding-right: 20px;
+        text-indent: -9999px;
+        display: block;
+      }
     }
+
+    .nav {
+      float: left;
+      position: relative;
+
+      li {
+        float: left;
+        height: 70px;
+        position: relative;
+
+        a {
+          display: block;
+          box-sizing: border-box;
+          color: #cccccc;
+          line-height: 70px;
+          padding: 0 19px;
+        }
+      }
+    }
+
+    .nav::after {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 19px;
+      position: absolute;
+      top: 21px;
+      right: -20px;
+      background: url(../../assets/topbar.png) no-repeat;
+      background-position: -190px 0;
+    }
+
+    .nav a:hover,
+    .cho a {
+      background: #000;
+      text-decoration: none;
+      color: #fff !important;
+    }
+
+    .cho-s {
+      width: 12px;
+      height: 7px;
+      display: block;
+      position: absolute;
+      top: 65px;
+      left: 50%;
+      margin-left: -6px;
+      background: url(../../assets/topbar.png) no-repeat;
+      background-position: -105px -70px;
+      background-size: 120px auto;
+      overflow: hidden;
+    }
+
+    .tools {
+      .login-btn {
+        float: right;
+        display: block;
+        width: 28px;
+        margin-top: 7px;
+        color: #787878;
+        cursor: pointer;
+        font-size: 12px;
+        font-style: normal;
+      }
+      .login-btn:hover{
+        text-decoration: underline;
+      }
+
+      .avatar-item {
+        margin-right: 24px;
+        float: right;
+        height: 45px;
+        margin: 19px 0 0 20px;
+        padding: 0 22px 0 0;
+        background-position: right -47px;
+        background-image: none;
+        position: relative;
+
+        .ant-avatar {
+          width: 30px;
+          height: 30px;
+        }
+
+        i {
+          display: inline-block;
+          position: absolute;
+          min-width: 17px;
+          height: 17px;
+          padding: 0 4px;
+          box-sizing: border-box;
+          background: #C20C0C;
+          border-radius: 18px;
+          border: 1px solid #242424;
+          line-height: 15px;
+          font-size: 12px;
+          white-space: nowrap;
+          color: #fff;
+          text-align: center;
+          font-style: normal;
+          font-weight: 600;
+          top: -5px;
+          left: 20px;
+        }
+      }
+
+      .avatar-item:hover {
+        i {
+          display: none;
+        }
+      }
+
+      [class*='-col-rtl'] .avatar-item {
+        margin-right: 0;
+        margin-left: 24px;
+      }
+
+      .create-c {
+        float: right;
+        width: 90px;
+        height: 32px;
+        margin: 19px 0 0 12px;
+        box-sizing: border-box;
+        padding-left: 0 auto;
+        border: 1px solid #4F4F4F;
+        background-position: 0 -140px;
+        line-height: 30px;
+        color: #ccc;
+        border-radius: 20px;
+        font-size: 12px;
+        line-height: 32px;
+        font-weight: 500;
+      }
+
+      .create-c:hover {
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid #ccc;
+      }
+
+      .search {
+        float: right;
+        width: 158px;
+        height: 32px;
+        position: relative;
+        zoom: 1;
+
+        .ser-i {
+          margin-top: 19px;
+          background-color: #fff;
+          border-radius: 32px;
+
+          input {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .line {
+    z-index: 1001;
+    height: 34px;
+    box-sizing: border-box;
+    background-color: #C20C0C;
+    border-bottom: 1px solid #a40011;
+    margin-top: 1px;
+  }
+
+  .line-c {
+    z-index: 1001;
+    height: 5px;
+    box-sizing: border-box;
+    background-color: #C20C0C;
+    border-bottom: 1px solid #a40011;
+    margin-top: 1px;
+  }
+
+  .header-2 {
+    clear: both;
+    width: 100%;
+    height: 100%;
+
+    ul {
+      width: 1100px;
+      height: 100%;
+      margin: 0 auto;
+      padding-left: 180px;
+
+      li {
+        float: left;
+        height: 34px;
+        line-height: 34px;
+
+        a {
+          color: #fff;
+          text-decoration: none;
+          cursor: pointer;
+
+          strong {
+            display: inline-block;
+            height: 21px;
+            padding: 0 13px;
+            margin: 7px 17px 0;
+            line-height: 21px;
+            font-size: 12px !important;
+            font-style: normal;
+            text-align: left;
+            font-size: inherit;
+          }
+
+          strong:hover,
+          .cho-h2 {
+            border-radius: 20px;
+            background: #9B0909;
+          }
+        }
+      }
+    }
+  }
 }
