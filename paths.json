@@ -3,9 +3,9 @@
     "baseUrl": "./src",
     "paths": {
       "@/*":["./"],
-      "@Components/*": ["components/*"],
+      "@components/*": ["components/*"],
       "@page/*": ["page/*"],
-      "@/assets/*": ["assets/*"]
+      "@assets/*": ["assets/*"]
     }
   }
 }
