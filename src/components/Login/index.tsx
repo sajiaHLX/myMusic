@@ -47,11 +47,22 @@ class LoginModal extends React.Component {
     }
   }
 
+  private LoginModalWidthAHeight = [
+    {
+      height: 372,
+    },
+    {
+      height: 314,
+    },
+    {
+      height: 341,
+    },
+  ]
+
   private LoginModalType = [
     {
       type: LoginType.Index,
       title: '登录',
-      height: 372,
       com: <>
         <div className="login-header"
           onMouseDown={() => {
@@ -76,7 +87,7 @@ class LoginModal extends React.Component {
               <a className="btn-1" onClick={() => this.onLoginBtnClick(LoginType.Phone)}><i className="btn-t-1">手机号登陆</i></a>
             </div>
             <div className="login-btn">
-              <a className="btn-2"><i className="btn-t-2">注  册</i></a>
+              <a className="btn-2" onClick={() => this.onLoginBtnClick(LoginType.Registered)}><i className="btn-t-2">注  册</i></a>
             </div>
           </div>
           <div className="l-alt">
@@ -101,13 +112,11 @@ class LoginModal extends React.Component {
             </div>
           </div>
         </div>
-  
       </>,
     },
     {
       type: LoginType.Index,
       title: '手机号登录',
-      height: 314,
       com: <>
         <div className="login-header"
           onMouseDown={() => {
@@ -133,7 +142,6 @@ class LoginModal extends React.Component {
     {
       type: LoginType.Index,
       title: '手机号注册',
-      height: 341,
       com: <>
         <div className="login-header"
           onMouseDown={() => {
@@ -159,10 +167,12 @@ class LoginModal extends React.Component {
   ]
 
   render() {
+    const { loginType } = this.state;
+    const WAH = this.LoginModalWidthAHeight[loginType]
     return (
       <div id='login-modal' ref={ref => this.ref = ref}>
         <div className='login-modal'
-          style={{width: 372}}
+          style={{ height: WAH.height }}
           onMouseMove={(a) => {
             if (!this.loginModal) return
             if (this.modalX === 0 && this.modalY === 0) {
@@ -182,7 +192,7 @@ class LoginModal extends React.Component {
               this.loginModal.style.top = (this.modalY! + this.top) + 'px';
             }
           }}>
-            {this.LoginModalType[this.state.loginType].com}
+          {this.LoginModalType[loginType].com}
         </div>
         <div className="cover"></div>
       </div >
