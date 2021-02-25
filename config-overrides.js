@@ -24,9 +24,9 @@ module.exports = override(
   addLessLoader({
     lessOptions: {
       javascriptEnabled: true,
-      modifyVars: {
-        '@primary-color': '#1DA57A'
-      },
+      // modifyVars: {
+      //   '@primary-color': '#000000'
+      // },
     },
   }),
   // 路径别名
@@ -35,6 +35,7 @@ module.exports = override(
         ['@assets']: path.resolve(__dirname, 'src/assets'),
         ['@components']: path.resolve(__dirname, 'src/components'),
         ['@page']: path.resolve(__dirname, 'src/page'),
+        ['@utils']: path.resolve(__dirname, 'src/utils'),
   }),
   (config) => {
     //修改、添加loader 配置 :

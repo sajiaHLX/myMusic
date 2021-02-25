@@ -1,8 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
-import { render, unmountComponentAtNode } from 'react-dom';
+import { render } from 'react-dom';
 import AllToast from '@components/Toast';
+import { Form, Input, Button, Checkbox } from 'antd';
+import { phone } from '@utils/checkers';
 import './index.less'
 
 enum LoginType {
@@ -63,7 +64,7 @@ class LoginModal extends React.Component {
     {
       type: LoginType.Index,
       title: '登录',
-      com: <>
+      com: <div className="default-login">
         <div className="login-header"
           onMouseDown={() => {
             if (!this.loginModal) {
@@ -112,12 +113,12 @@ class LoginModal extends React.Component {
             </div>
           </div>
         </div>
-      </>,
+      </div>,
     },
     {
-      type: LoginType.Index,
+      type: LoginType.Phone,
       title: '手机号登录',
-      com: <>
+      com: <div className="phone-login">
         <div className="login-header"
           onMouseDown={() => {
             if (!this.loginModal) {
@@ -135,14 +136,50 @@ class LoginModal extends React.Component {
           </div>
         </div>
         <div className="content">
-
+          {/* <div></div> */}
+          <Form>
+            <Form.Item
+              name="phoneNumber"
+              required={true}
+              validateTrigger="onSubmit"
+              rules={[
+                { required: true, message: '请输入手机号' },
+                {
+                  validator: (_rules, val: string, cb) => {
+                    if (val && phone(val)) {
+                      cb('请输入正确的手机号');
+                    }
+                    cb();
+                  }
+                }
+              ]}
+            >
+              <Input placeholder="请输入手机号" allowClear />
+            </Form.Item>
+            {/* <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+              <Input.Password />
+            </Form.Item> */}
+            <Form.Item >
+              <Button type="primary" htmlType="submit">
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
         </div>
-      </>,
+        <div className="bottom">
+          <a href="javascript:;" data-action="select" className="back">&lt;&nbsp;&nbsp;其他登录方式</a>
+          <a href="javascript:;" data-action="reg" className="registered">没有帐号？免费注册&nbsp;&nbsp;&gt;</a>
+        </div>
+      </div>,
     },
     {
-      type: LoginType.Index,
+      type: LoginType.Registered,
       title: '手机号注册',
-      com: <>
+      com: <div className="registered-login">
         <div className="login-header"
           onMouseDown={() => {
             if (!this.loginModal) {
@@ -160,9 +197,8 @@ class LoginModal extends React.Component {
           </div>
         </div>
         <div className="content">
-
         </div>
-      </>,
+      </div>,
     }
   ]
 
