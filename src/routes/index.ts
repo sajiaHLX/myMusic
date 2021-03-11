@@ -1,16 +1,26 @@
+import { RouteProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
 import Home from '@page/findMusic';
 import MyMusic from '@page/myMusic';
+import HomePage from '@page/homePage';
 
-let routes = [
+export interface RouteConfigProps extends RouteProps {
+  route: string;
+  component?: React.ComponentClass | React.FC<RouteComponentProps | any>;
+  children?: RouteConfigProps[];
+  redirect?: string;
+}
+
+export let routes = [
   {
-    path: '/',
-    component: Home,
+    route: '/',
+    component: HomePage,
     exact: true,
-    childRoutes: [
-      {
+    children: [
+      // {
         // path: '/',
         // component: 'Home',
-      }
+      // }
       // {
       //     path: 'inbox',
       //     component: Inbox,
@@ -27,8 +37,8 @@ let routes = [
     ],
   },
   {
-    path: '/myMusic',
+    route: '/myMusic',
     component: MyMusic
   },
 ];
-export default routes;
+// export default routes;

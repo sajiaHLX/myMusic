@@ -1,5 +1,3 @@
-class UserServices {
-  
-}
+import axios from 'axios';
 
-export default new UserServices();
+export const PhoneLogin = (params: {phone: string, password: string}) => axios.post('/login/cellphone', params)

@@ -2,8 +2,10 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { render } from 'react-dom';
 import AllToast from '@components/Toast';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { phone } from '@utils/checkers';
+import { FormInstance } from 'antd/lib/form';
+import { PhoneLogin } from '../../services';
 import './index.less'
 
 enum LoginType {
@@ -17,6 +19,7 @@ interface State {
   loginType: LoginType,
 }
 class LoginModal extends React.Component {
+  private form: null | FormInstance = null;
   state: State = {
     check: false,
     loginType: 0,
@@ -137,9 +140,13 @@ class LoginModal extends React.Component {
         </div>
         <div className="content">
           {/* <div></div> */}
-          <Form>
+          <Form
+            ref={(r) => {
+              this.form = r;
+            }}
+          >
             <Form.Item
-              name="phoneNumber"
+              name="phone"
               required={true}
               validateTrigger="onSubmit"
               rules={[
@@ -156,17 +163,31 @@ class LoginModal extends React.Component {
             >
               <Input placeholder="请输入手机号" allowClear />
             </Form.Item>
-            {/* <Form.Item
-              label="Password"
+            <Form.Item
               name="password"
-              rules={[{ required: true, message: 'Please input your password!' }]}
+              required={true}
+              rules={[
+                { required: true, message: '请输入密码！' }
+              ]}
             >
-              <Input.Password />
-            </Form.Item> */}
-            <Form.Item >
-              <Button type="primary" htmlType="submit">
-                登录
-              </Button>
+              <Input.Password placeholder="请输入密码" />
+            </Form.Item>
+            <Form.Item className="login-btn">
+              <a className="btn-1" onClick={() => {
+                this.form?.validateFields().then(async (res) => {
+                  const result = await PhoneLogin(res as { phone: string, password: string });
+                  if (result.data.code !== 200) {
+                    message.error(result.data.msg)
+                  } else {
+                    window.localStorage.setItem('token', result.data.token);
+                    window.localStorage.setItem('profile', JSON.stringify(result.data.profile));
+                    window.localStorage.setItem('account', JSON.stringify(result.data.account));
+                    this.removeChild();
+                  }
+                })
+              }}>
+                <i className="btn-t-1">登陆</i>
+              </a>
             </Form.Item>
           </Form>
         </div>

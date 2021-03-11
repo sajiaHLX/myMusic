@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Input, Avatar } from 'antd';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
-import { ShowLoginModal }from '../Login/index';
+import { ShowLoginModal } from '../Login/index';
 import './index.less';
 
 @observer
@@ -12,7 +12,7 @@ class Header extends React.Component {
     onC: 0,
     sIndex: 0,
     showModal: false,
-    isLogin: false,
+    isLogin: window.localStorage.getItem('token') ? true : false,
   }
 
   changeI = (_e: any, index: number) => this.setState({ onC: index })
@@ -63,7 +63,52 @@ class Header extends React.Component {
               {
                 this.state.isLogin ? <>
                   <Avatar icon={<UserOutlined />} />
-                  <i>2</i>
+                  <div className="login-action">
+                    <ul>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-hm"></i>
+                          <em>我的主页</em>
+                        </a>
+                      </li>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-msg"></i>
+                          <em>我的消息</em>
+                        </a>
+                      </li>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-lv"></i>
+                          <em>我的等级</em>
+                        </a>
+                      </li>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-mbr"></i>
+                          <em>VIP会员</em>
+                        </a>
+                      </li>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-st"></i>
+                          <em>个人设置</em>
+                        </a>
+                      </li>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-verify"></i>
+                          <em>实名认证</em>
+                        </a>
+                      </li>
+                      <li>
+                        <a className="itm-1" href="/user/home?id=436340822">
+                          <i className="icn icn-ex"></i>
+                          <em>退出</em>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </> : <em className="login-btn" onClick={() => { ShowLoginModal() }}>登陆</em>
               }
             </span>
