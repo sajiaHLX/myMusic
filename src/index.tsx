@@ -6,30 +6,40 @@ import HomePage from '@page/homePage';
 import './index.less';
 import reportWebVitals from './reportWebVitals';
 
-axios.defaults.baseURL = 'http://localhost:9001';
-axios.interceptors.request.use(
-  config => {
-    config.withCredentials = true // 允许携带token ,这个是解决跨域产生的相关问题
-    config.timeout = 6000
-    let token = window.localStorage.getItem('token')
-    if (token) {
-      config.headers = {
-        'access-token': token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
-    if (config.url === 'refresh') {
-      config.headers = {
-        'refresh-token': sessionStorage.getItem('refresh_token'),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
-    return config
-  },
-  error => {
-    return Promise.reject(error)
-  }
-)
+// axios.defaults.baseURL = '/api';
+// axios.interceptors.request.use(
+//   config => {
+//     config.withCredentials = true // 允许携带token ,这个是解决跨域产生的相关问题
+//     config.timeout = 6000
+//     let token = window.localStorage.getItem('token')
+//     if (token) {
+//       config.headers = {
+//         'access-token': token,
+//         'Content-Type': 'application/x-www-form-urlencoded'
+//       }
+//     }
+//     if (config.url === 'refresh') {
+//       config.headers = {
+//         'refresh-token': sessionStorage.getItem('refresh_token'),
+//         'Content-Type': 'application/x-www-form-urlencoded'
+//       }
+//     }
+//     return config
+//   },
+//   error => {
+//     return Promise.reject(error)
+//   }
+// )
+
+// axios.interceptors.request.use((config) => {
+//   let token = window.localStorage.getItem('token')
+//   if (token) {
+//     config.headers.Authorization = token
+//   }
+//   return config
+// }, (error) => {
+//   return Promise.reject(error)
+// })
 
 ReactDOM.render(
   <React.StrictMode>

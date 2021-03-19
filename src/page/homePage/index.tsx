@@ -1,7 +1,12 @@
 import React from 'react';
-import Header from '../../components/Header';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Layout } from 'antd';
+import MyHeader from '@components/Header';
+import MyPlayBar from '@components/Playbar';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteConfigProps, routes } from '../../routes';
+
+
+const { Content } = Layout;
 class App extends React.Component {
 
   getRecursiveRoute = (routeConfigs: RouteConfigProps[], parentRoute: string = ''): any =>
@@ -24,8 +29,13 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Header />
-        <Switch>{this.getRecursiveRoute(routes)}</Switch>
+        <Layout>
+          <MyHeader></MyHeader>
+          <Content>
+            <Switch>{this.getRecursiveRoute(routes)}</Switch>
+          </Content>
+          <MyPlayBar />
+        </Layout>
       </div>
     )
   }

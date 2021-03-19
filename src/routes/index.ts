@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import Home from '@page/findMusic';
 import MyMusic from '@page/myMusic';
 import HomePage from '@page/homePage';
+import HomePageBody from '@page/homePageBody';
 
 export interface RouteConfigProps extends RouteProps {
   route: string;
@@ -11,29 +12,16 @@ export interface RouteConfigProps extends RouteProps {
   redirect?: string;
 }
 
-export let routes = [
+export const routes = [
   {
     route: '/',
     component: HomePage,
     exact: true,
     children: [
-      // {
-        // path: '/',
-        // component: 'Home',
-      // }
-      // {
-      //     path: 'inbox',
-      //     component: Inbox,
-      //     childRoutes: [
-      //         { path: '/messages/:id', component: Message },
-      //         {
-      //             path: 'messages/:id',
-      //             onEnter: function (nextState, replaceState) {
-      //                 replaceState(null, '/messages/' + nextState.params.id)
-      //             }
-      //         }
-      //     ]
-      // }
+      {
+        route: '/',
+        component: HomePageBody,
+      }
     ],
   },
   {
@@ -41,4 +29,3 @@ export let routes = [
     component: MyMusic
   },
 ];
-// export default routes;

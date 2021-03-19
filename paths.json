@@ -7,7 +7,8 @@
       "@page/*": ["page/*"],
       "@assets/*": ["assets/*"],
       "@utils/*":["utils/*"],
-      "@services/*":["services/*"]
+      "@services/*":["services/*"],
+      "@store/*":["store/*"]
     }
   }
 }

@@ -5,7 +5,7 @@ import AllToast from '@components/Toast';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { phone } from '@utils/checkers';
 import { FormInstance } from 'antd/lib/form';
-import { PhoneLogin } from '../../services';
+import { PhoneLogin } from '@services/index';
 import './index.less'
 
 enum LoginType {
@@ -175,14 +175,15 @@ class LoginModal extends React.Component {
             <Form.Item className="login-btn">
               <a className="btn-1" onClick={() => {
                 this.form?.validateFields().then(async (res) => {
-                  const result = await PhoneLogin(res as { phone: string, password: string });
-                  if (result.data.code !== 200) {
-                    message.error(result.data.msg)
+                  const result = await (await PhoneLogin(res as { phone: string, password: string })).data;
+                  if (result.code !== 200) {
+                    message.error(result.msg)
                   } else {
-                    window.localStorage.setItem('token', result.data.token);
-                    window.localStorage.setItem('profile', JSON.stringify(result.data.profile));
-                    window.localStorage.setItem('account', JSON.stringify(result.data.account));
+                    window.localStorage.setItem('token', result.token);
+                    window.localStorage.setItem('profile', JSON.stringify(result.profile));
+                    window.localStorage.setItem('account', JSON.stringify(result.account));
                     this.removeChild();
+                    window.location.reload();
                   }
                 })
               }}>

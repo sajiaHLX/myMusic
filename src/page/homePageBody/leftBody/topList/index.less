@@ -1,0 +1,256 @@
+.top-list-wrap {
+  height: 495px;
+
+  .v-hd2 {
+    font-size: 12px;
+    height: 33px;
+    padding: 0 10px 0 34px;
+    background: url(../../../../assets/index.png) no-repeat 0 9999px;
+    background-position: -225px -156px;
+    border-bottom: 2px solid #C10D0C;
+
+    .line {
+      margin: 0 10px;
+      color: #ccc;
+    }
+
+    .tit {
+      float: left;
+      font-size: 20px;
+      font-weight: normal;
+      line-height: 28px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .more {
+      float: right;
+      margin-top: 9px;
+
+      .cor {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-left: 4px;
+        margin-top: -3px;
+        vertical-align: middle;
+        background: url(../../../../assets/index.png);
+        background-position: 0 -240px;
+      }
+    }
+  }
+
+  .top-list {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 20px;
+
+    .blk {
+      float: left;
+      width: 230px;
+      border: 1px solid #d3d3d3;
+
+      .top {
+        height: 120px;
+        padding: 20px 0 0 19px;
+        background: #f4f4f4;
+
+        .cver {
+          width: 80px;
+          height: 80px;
+          position: relative;
+          float: left;
+
+          .j-img {
+            width: 100%;
+            height: 100%;
+          }
+
+          .msk {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            font-size: 12px;
+            background: url(../../../../assets/coverall.png) no-repeat;
+            background-position: -145px -57px;
+          }
+        }
+
+        .tit {
+          float: left;
+          width: 116px;
+          margin: 6px 0 0 10px;
+
+          h3 {
+            font-weight: 700;
+            font-size: 14px;
+          }
+
+          .btn {
+            margin-top: 10px;
+
+            .play {
+              float: left;
+              width: 22px;
+              height: 22px;
+              margin-right: 10px;
+              text-indent: -9999px;
+              background: url(../../../../assets/index.png) no-repeat 0 9999px;
+              background-position: -267px -205px;
+              display: block;
+            }
+
+            .play:hover {
+              background-position: -267px -235px;
+            }
+
+            .subscribe-flag {
+              float: left;
+              width: 22px;
+              height: 22px;
+              margin-right: 10px;
+              text-indent: -9999px;
+              background: url(../../../../assets/index.png) no-repeat 0 9999px;
+              background-position: -300px -205px;
+              display: block;
+            }
+
+            .subscribe-flag:hover {
+              background-position: -300px -235px;
+            }
+          }
+        }
+      }
+    }
+
+    .blk:nth-child(2),
+    .blk:nth-child(1) {
+      border-right: 0px;
+    }
+
+    dd {
+      margin: 0;
+      height: 320px;
+
+      ol {
+        padding-left: 50px;
+        line-height: 32px;
+
+        li {
+          height: 32px;
+          vertical-align: middle;
+          font-weight: 500;
+          margin-left: -50px;
+          padding-left: 50px;
+
+          .no {
+            float: left;
+            position: relative;
+            width: 35px;
+            height: 32px;
+            margin-left: -35px;
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+          }
+
+          .no-top {
+            color: #c10d0c;
+          }
+
+          .nm {
+            font-size: 12px;
+            line-height: 32px;
+            list-style: none;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+            color: #000;
+            float: left;
+            width: 170px;
+            height: 32px;
+            text-overflow: ellipsis;
+          }
+
+          .oper {
+            display: none;
+            float: right;
+            width: 82px;
+            margin-top: 7px;
+            overflow: hidden;
+
+            .s-bg {
+              line-height: 32px;
+              background: url(../../../../assets/index.png) no-repeat 0 9999px;
+              background-position: -267px -268px;
+              display: block;
+              float: left;
+              width: 17px;
+              height: 17px;
+              margin-right: 10px;
+            }
+
+            .s-bg:hover {
+              background-position: -267px -288px;
+            }
+
+            .u-icn {
+              display: block;
+              float: left;
+              width: 17px;
+              height: 17px;
+              margin: 2px 6px 0 0;
+              line-height: 32px;
+              background: url(../../../../assets/icon.png) no-repeat 0 9999px;
+              overflow: hidden;
+              background-position: 0 -700px;
+            }
+
+            .u-icn:hover {
+              background-position: -22px -700px;
+            }
+
+            .record {
+              display: block;
+              float: left;
+              width: 17px;
+              height: 17px;
+              margin-right: 10px;
+              line-height: 32px;
+              background: url(../../../../assets/index.png) no-repeat 0 9999px;
+              overflow: hidden;
+              background-position: -297px -268px;
+            }
+
+            .record:hover {
+              background-position: -297px -288px
+            }
+          }
+        }
+
+        li:hover {
+          .nm {
+            width: 90px;
+          }
+
+          .oper {
+            display: block;
+          }
+        }
+
+        li:nth-child(odd) {
+          background: #e8e8e8;
+        }
+
+        li:nth-child(even) {
+          background: #f4f4f4;
+        }
+      }
+    }
+
+
+  }
+}

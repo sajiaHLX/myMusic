@@ -37,6 +37,7 @@ module.exports = override(
         ['@page']: path.resolve(__dirname, 'src/page'),
         ['@utils']: path.resolve(__dirname, 'src/utils'),
         ['@services']: path.resolve(__dirname, 'src/services'),
+        ['@store']: path.resolve(__dirname, 'src/store'),
   }),
   (config) => {
     //修改、添加loader 配置 :
@@ -52,5 +53,5 @@ module.exports = override(
       }
     })
     return config
-  }
+  },
 )

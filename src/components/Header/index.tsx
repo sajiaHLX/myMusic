@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Input, Avatar } from 'antd';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
-import { ShowLoginModal } from '../Login/index';
+import { ShowLoginModal } from '@components/Login';
 import './index.less';
 
 @observer
@@ -102,9 +102,12 @@ class Header extends React.Component {
                         </a>
                       </li>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <a className="itm-1">
                           <i className="icn icn-ex"></i>
-                          <em>退出</em>
+                          <em onClick={() => {
+                            window.localStorage.clear();
+                            window.location.reload();
+                          }}>退出</em>
                         </a>
                       </li>
                     </ul>
