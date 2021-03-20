@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { getPersonalizedRecommendations } from '@services/index';
+import { Link } from 'react-router-dom';
 import './index.less';
 
 interface Persona {
@@ -64,12 +65,12 @@ export default class PersonalizedRecommendations extends React.Component {
             <p title="每日歌曲推荐" className="date">
               <span className="head">星期一</span>
               <span className="bd">15</span>
-              <a className="mask" title="每日歌曲推荐" href="/discover/recommend/taste"></a>
+              <Link className="mask" title="每日歌曲推荐" to="/discover/recommend/taste"></Link>
             </p>
             <p className="dec">
-              <a className="tit s-fc0" title="每日歌曲推荐" href="/discover/recommend/taste">
+              <Link className="tit s-fc0" title="每日歌曲推荐" to="/discover/recommend/taste">
                 每日歌曲推荐
-              </a>
+              </Link>
             </p>
             <p className="idv" title="根据你的口味生成，每天6:00更新">
               根据你的口味生成，<br />每天6:00更新
@@ -79,7 +80,7 @@ export default class PersonalizedRecommendations extends React.Component {
             return <li key={item.id}>
               <div className="u-cover u-cover-1">
                 <img src={`${item.picUrl}?param=140y140`} />
-                <a title={item.name} href={`/playlist?id=${item.id}`} className="msk"></a>
+                <Link title={item.name} to={`/playlist?id=${item.id}`} className="msk"></Link>
                 <div className="bottom">
                   <a className="icon-play f-fr" title="播放"></a>
                   <span className="icon-headset"></span>
@@ -87,9 +88,9 @@ export default class PersonalizedRecommendations extends React.Component {
                 </div>
               </div>
               <p className="dec">
-                <a title={`${item.name}`} className="tit s-fc0" href={`/playlist?id=${item.id}`}>
+                <Link title={`${item.name}`} className="tit s-fc0" to={`/playlist?id=${item.id}`}>
                   {item.name}
-                </a>
+                </Link>
               </p>
               <p className="idv f-brk s-fc4" title={item.copywriter}>
                 <em>{item.copywriter}</em>

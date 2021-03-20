@@ -4,7 +4,6 @@ import SwiperCore, { Autoplay, Pagination, Navigation } from 'swiper';
 import { getHomePageBanner } from '@services/index';
 import { HomePageBannerType } from '@utils/types';
 import LeftBody from './leftBody';
-import RightBody from './rightBody';
 import "swiper/components/navigation/navigation.less";
 import "swiper/components/pagination/pagination.less";
 import "swiper/swiper.scss";
@@ -53,14 +52,6 @@ export default class PageBody extends React.Component {
             >
               <div className="slide-wrap">
                 <img src={item.imageUrl} alt={item.typeTitle} />
-                <div className="download">
-                  <a className="btn" onClick={() => {
-                    console.log('下载');
-                  }}></a>
-                  <p>PC 安卓 iPhone WP iPad Mac 六大客户端</p>
-                  <span className="shadow"></span>
-                  <span className="shadowr"></span>
-                </div>
               </div>
             </SwiperSlide>
           })}
@@ -70,9 +61,6 @@ export default class PageBody extends React.Component {
         <div className="content">
           <div className="left-body">
             <LeftBody />
-          </div>
-          <div className="right-body">
-            <RightBody />
           </div>
         </div>
       </div>

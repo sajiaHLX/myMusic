@@ -26,7 +26,7 @@ class Header extends React.Component {
       { name: '下载客户端', path: '/download' },
     ];
     let sMenu = [
-      { name: '推荐', path: '/recommend' },
+      { name: '推荐', path: '/' },
       { name: '排行榜', path: '/leader-board' },
       { name: '歌单', path: '/song-list' },
       { name: '主播电台', path: '/anchor-station' },
@@ -66,40 +66,40 @@ class Header extends React.Component {
                   <div className="login-action">
                     <ul>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <Link className="itm-1" to="/user/home?id=436340822">
                           <i className="icn icn-hm"></i>
                           <em>我的主页</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <Link className="itm-1" to="/user/home?id=436340822">
                           <i className="icn icn-msg"></i>
                           <em>我的消息</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <Link className="itm-1" to="/user/home?id=436340822">
                           <i className="icn icn-lv"></i>
                           <em>我的等级</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <Link className="itm-1" to="/user/home?id=436340822">
                           <i className="icn icn-mbr"></i>
                           <em>VIP会员</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <Link className="itm-1" to="/user/home?id=436340822">
                           <i className="icn icn-st"></i>
                           <em>个人设置</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a className="itm-1" href="/user/home?id=436340822">
+                        <Link className="itm-1" to="/user/home?id=436340822">
                           <i className="icn icn-verify"></i>
                           <em>实名认证</em>
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <a className="itm-1">

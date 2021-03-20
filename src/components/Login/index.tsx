@@ -2,10 +2,11 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { render } from 'react-dom';
 import AllToast from '@components/Toast';
-import { Form, Input, Button, Checkbox, message } from 'antd';
+import { Form, Input, message } from 'antd';
 import { phone } from '@utils/checkers';
 import { FormInstance } from 'antd/lib/form';
 import { PhoneLogin } from '@services/index';
+import { Link } from 'react-router-dom';
 import './index.less'
 
 enum LoginType {
@@ -110,9 +111,9 @@ class LoginModal extends React.Component {
                 })
               }} />
               <label style={{ marginLeft: '2px' }}>同意</label>
-              <a href="http://st.music.163.com/official-terms/service" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《服务条款》</a>
-              <a href="http://st.music.163.com/official-terms/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《隐私政策》</a>
-              <a href="https://st.music.163.com/official-terms/children" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《儿童隐私政策》</a>
+              <Link to="http://st.music.163.com/official-terms/service" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《服务条款》</Link>
+              <Link to="http://st.music.163.com/official-terms/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《隐私政策》</Link>
+              <Link to="https://st.music.163.com/official-terms/children" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《儿童隐私政策》</Link>
             </div>
           </div>
         </div>
@@ -193,8 +194,8 @@ class LoginModal extends React.Component {
           </Form>
         </div>
         <div className="bottom">
-          <a href="javascript:;" data-action="select" className="back">&lt;&nbsp;&nbsp;其他登录方式</a>
-          <a href="javascript:;" data-action="reg" className="registered">没有帐号？免费注册&nbsp;&nbsp;&gt;</a>
+          <a className="back">&lt;&nbsp;&nbsp;其他登录方式</a>
+          <a className="registered">没有帐号？免费注册&nbsp;&nbsp;&gt;</a>
         </div>
       </div>,
     },

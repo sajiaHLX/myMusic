@@ -3,6 +3,7 @@ import { getTopListFastUp, getNewSongList, getOriginalList } from '@services/ind
 import { observer } from 'mobx-react';
 import MusicList from '@store/musicList';
 import { getMusicDetail } from '@services/index';
+import { Link } from 'react-router-dom';
 import './index.less'
 
 interface Item {
@@ -46,9 +47,9 @@ export default class TopList extends React.Component {
   render() {
     return <div className="top-list-wrap">
       <div className="v-hd2">
-        <a href="/discover/toplist" className="tit">榜单</a>
+        <Link to="/discover/toplist" className="tit">榜单</Link>
         <span className="more">
-          <a href="/discover/toplist">更多</a>
+          <Link to="/discover/toplist">更多</Link>
           <i className="cor">&nbsp;</i>
         </span>
       </div>
@@ -57,12 +58,12 @@ export default class TopList extends React.Component {
           <dt className="top">
             <div className="cver">
               <img className="j-img" src="http://p4.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg?param=100y100" />
-              <a href="/discover/toplist?id=19723756" className="msk" title="飙升榜"></a>
+              <Link to="/discover/toplist?id=19723756" className="msk" title="飙升榜"></Link>
             </div>
             <div className="tit">
-              <a href="/discover/toplist?id=19723756" title="飙升榜">
+              <Link to="/discover/toplist?id=19723756" title="飙升榜">
                 <h3 className="f-fs1 f-thide">飙升榜</h3>
-              </a>
+              </Link>
               <div className="btn">
                 <a className="play" onClick={()=>{
                   MusicList.changePlayList(this.state.showFastUpList);
@@ -76,7 +77,7 @@ export default class TopList extends React.Component {
               {this.state.showFastUpList.map((item: Item, index) => {
                 return <li key={index}>
                   <span className={`no ${(index + 1) <= 3 ? 'no-top' : ''}`}>{index + 1}</span>
-                  <a href={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</a>
+                  <Link to={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</Link>
                   {this.renderAction(item)}
                 </li>
               })}
@@ -87,12 +88,12 @@ export default class TopList extends React.Component {
           <dt className="top">
             <div className="cver">
               <img className="j-img" src="http://p4.music.126.net/N2HO5xfYEqyQ8q6oxCw8IQ==/18713687906568048.jpg?param=100y100" />
-              <a href="/discover/toplist?id=3779629" className="msk" title="新歌榜"></a>
+              <Link to="/discover/toplist?id=3779629" className="msk" title="新歌榜"></Link>
             </div>
             <div className="tit">
-              <a href="/discover/toplist?id=3779629" title="新歌榜">
+              <Link to="/discover/toplist?id=3779629" title="新歌榜">
                 <h3 className="f-fs1 f-thide">新歌榜</h3>
-              </a>
+              </Link>
               <div className="btn">
                 <a className="play">播放</a>
                 <a className="subscribe-flag">收藏</a>
@@ -104,7 +105,7 @@ export default class TopList extends React.Component {
               {this.state.showNewList.map((item: Item, index) => {
                 return <li key={index}>
                   <span className={`no ${(index + 1) <= 3 ? 'no-top' : ''}`}>{index + 1}</span>
-                  <a href={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</a>
+                  <Link to={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</Link>
                   {this.renderAction(item)}
                 </li>
               })}
@@ -115,12 +116,12 @@ export default class TopList extends React.Component {
           <dt className="top">
             <div className="cver">
               <img className="j-img" src="http://p4.music.126.net/sBzD11nforcuh1jdLSgX7g==/18740076185638788.jpg?param=100y100" />
-              <a href="/discover/toplist?id=2884035" className="msk" title="原创榜"></a>
+              <Link to="/discover/toplist?id=2884035" className="msk" title="原创榜"></Link>
             </div>
             <div className="tit">
-              <a href="/discover/toplist?id=2884035" title="原创榜">
+              <Link to="/discover/toplist?id=2884035" title="原创榜">
                 <h3 className="f-fs1 f-thide">原创榜</h3>
-              </a>
+              </Link>
               <div className="btn">
                 <a className="play">播放</a>
                 <a className="subscribe-flag">收藏</a>
@@ -132,7 +133,7 @@ export default class TopList extends React.Component {
               {this.state.showOriginalList.map((item: Item, index) => {
                 return <li key={index}>
                   <span className={`no ${(index + 1) <= 3 ? 'no-top' : ''}`}>{index + 1}</span>
-                  <a href={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</a>
+                  <Link to={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</Link>
                   {this.renderAction(item)}
                 </li>
               })}

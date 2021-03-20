@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { getNewCD } from '@services/index';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Autoplay, Navigation } from 'swiper';
+import SwiperCore, { Navigation } from 'swiper';
+import { Link } from 'react-router-dom';
 import './index.less'
 
 SwiperCore.use([Navigation]);
@@ -31,9 +32,9 @@ export default class NewCD extends React.Component {
   render() {
     return <div className="new-cd">
       <div className="v-hd2">
-        <a href="/discover/album" className="tit">新碟上架</a>
+        <Link to="/discover/album" className="tit">新碟上架</Link>
         <span className="more">
-          <a href="/discover/album">更多</a>
+          <Link to="/discover/album">更多</Link>
           <i className="cor">&nbsp;</i>
         </span>
       </div>
@@ -57,14 +58,14 @@ export default class NewCD extends React.Component {
                 return <SwiperSlide className="item" key={index}>
                   <div className="u-cover">
                     <img className="j-img" src={`${item.picUrl}?param=100y100`} />
-                    <a title={item.name} href={`/album?id=${item.id}`} className="msk"></a>
+                    <Link title={item.name} to={`/album?id=${item.id}`} className="msk"></Link>
                     <a className="icon-play" title="播放"></a>
                   </div>
                   <p className="f-thide">
-                    <a title={item.name} href={`/album?id=${item.id}`} className="tit">{item.name}</a>
+                    <Link title={item.name} to={`/album?id=${item.id}`} className="tit">{item.name}</Link>
                   </p>
                   <p className="tit f-thide" title={item.artist.name}>
-                    <a className="s-fc3" href={`/artist?id=${item.artist.id}`}>{item.artist.name}</a>
+                    <Link className="s-fc3" to={`/artist?id=${item.artist.id}`}>{item.artist.name}</Link>
                   </p>
                 </SwiperSlide>
               })

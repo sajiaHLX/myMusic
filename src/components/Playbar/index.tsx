@@ -1,7 +1,9 @@
 import React from 'react';
-import { getMusicUrl, checkMusic } from '@services/index';
+import { getMusicUrl, checkMusic, getMusicDetail } from '@services/index';
 import { inject, observer } from 'mobx-react';
 import { Slider, message } from 'antd';
+import { MessageType } from 'antd/lib/message';
+import { Link } from 'react-router-dom';
 import './index.less'
 
 const PlayType = [
@@ -29,6 +31,7 @@ class MyPlayBar extends React.Component<IAppProps> {
   audioRef: HTMLAudioElement | null = null;
   myInterval: number | undefined;
   playTypeIndex: number = 0;
+  showMessage: MessageType | undefined = undefined;
 
   constructor(props: IAppProps) {
     super(props);
@@ -42,6 +45,7 @@ class MyPlayBar extends React.Component<IAppProps> {
     musicLong: 0,
     nowTime: 0,
     playing: this.props.MusicList.playing,
+    showPlayList: false,
   }
 
   componentDidMount = async () => {
@@ -58,6 +62,7 @@ class MyPlayBar extends React.Component<IAppProps> {
   getMusicUrl = async (play?: boolean) => {
     let { playing, playIndex, musicList } = this.props.MusicList;
     if (!playing) return;
+    if (playing.id !== this.state.playing.id) return;
     checkMusic({ id: playing.id }).then(async (resolve) => {
       if (!playing) return;
       const res = await (await getMusicUrl({ id: playing.id })).data;
@@ -70,15 +75,17 @@ class MyPlayBar extends React.Component<IAppProps> {
           this.audioRef.play();
         }
       });
-    }).catch(err => {
+    }).catch(async (err) => {
       window.clearInterval(this.myInterval);
-      message.error("版权方要求，当前专辑需单独付费，购买数字专辑即可无限畅享，自动播放下一首");
-      if (playIndex === musicList.length - 1) {
-        playIndex = 0;
-      } else {
-        playIndex += 1;
+      if (!this.showMessage) {
+        this.showMessage = message.error("版权方要求，当前专辑需单独付费，购买数字专辑即可无限畅享，自动播放下一首");
+        this.props.MusicList.changePlaying = undefined;
+        if (this.audioRef) {
+          this.setState({
+            url: '',
+          })
+        }
       }
-      this.props.MusicList.setPlayIndex(playIndex);
       return;
     })
   }
@@ -92,11 +99,14 @@ class MyPlayBar extends React.Component<IAppProps> {
         if (this.audioRef.currentTime === this.audioRef.duration) {
           if (this.playTypeIndex === 0) {
             this.playNext();
+            return;
           } else if (this.playTypeIndex === 1) {
             // 随机
+            return;
           } else if (this.playTypeIndex === 2) {
             this.audioRef.currentTime = 0;
             this.audioRef.play();
+            return;
           }
         }
         if (musicLong !== this.audioRef.duration) {
@@ -162,6 +172,7 @@ class MyPlayBar extends React.Component<IAppProps> {
         this.props.MusicList.setPlayIndex(0);
       });
     }
+    this.showMessage = undefined;
   }
 
   dealTime = (duration: number) => {
@@ -182,8 +193,17 @@ class MyPlayBar extends React.Component<IAppProps> {
     }
   }
 
+  renderArt = (ar: any) => {
+    return ar.map((item: { name: string; id: number; }, index: number) => {
+      return <span key={index} title={item.name}>
+        <Link to={`/artist?id=${item.id}`}>{item.name}</Link>
+        {ar.length === index + 1 ? '' : '/'}
+      </span>
+    })
+  }
+
   render() {
-    const { isLock, isShowVoice, stop, musicLong, playing } = this.state;
+    const { isLock, isShowVoice, stop, musicLong, playing, showPlayList } = this.state;
     this.storeChange(this.props.MusicList.playing);
     let showVoice: 'visible' | 'hidden' = `${isShowVoice ? 'visible' : 'hidden'}` as 'visible' | 'hidden';
     return (
@@ -224,7 +244,7 @@ class MyPlayBar extends React.Component<IAppProps> {
             <div className="head">
               {playing ? <>
                 <img src={`${playing.al.picUrl}?param=34y34`} />
-                <a href={`/song?id=${playing.id}`} className="mask"></a>
+                <Link to={`/song?id=${playing.id}`} className="mask"></Link>
               </> : <>
                 <img />
                 <a className="mask"></a>
@@ -232,16 +252,9 @@ class MyPlayBar extends React.Component<IAppProps> {
             </div>
             <div className="play">
               {playing ? <div className="words">
-                <a href={`/song?id=${playing.id}`} className="name" title={playing.name}>{playing.name}</a>
+                <Link to={`/song?id=${playing.id}`} className="name" title={playing.name}>{playing.name}</Link>
                 <span className="by">
-                  {
-                    playing.ar.map((item: { name: string; id: number; }, index: number) => {
-                      return <span key={index} title={item.name}>
-                        <a className="" href={`/artist?id=${item.id}`}>{item.name}</a>
-                        {playing.ar.length === index + 1 ? '' : '/'}
-                      </span>
-                    })
-                  }
+                  {this.renderArt(playing.ar)}
                 </span>
               </div> : <div className="words">
                 <a className="name" ></a>
@@ -285,12 +298,54 @@ class MyPlayBar extends React.Component<IAppProps> {
               }} />
               <span className="add f-pr">
                 <span className="tip" style={{ display: 'none' }}>已添加到播放列表</span>
-                <a title="播放列表" className="icn-list">{this.props.MusicList.musicList.length}</a>
+                <a title="播放列表" className="icn-list" onClick={() => {
+                  this.setState({
+                    showPlayList: !showPlayList,
+                    isLock: !isLock,
+                  })
+                }}>{this.props.MusicList.musicList.length}</a>
               </span>
               <div className="tip tip-1" style={{ display: 'none' }}>循环</div>
             </div>
           </div>
-
+          <div className="play-list" style={{ display: `${showPlayList ? 'block' : 'none'}` }}>
+            <div className="head">
+              <h4>播放列表
+                <span>({this.props.MusicList.musicList.length})</span>
+              </h4>
+              <span className="close" onClick={() => {
+                this.setState({
+                  showPlayList: !showPlayList,
+                  isLock: !isLock,
+                })
+              }}>关闭</span>
+            </div>
+            <div className="content">
+              <ul className="wrap">
+                {this.props.MusicList.musicList.map((item: any) => {
+                  return <li key={item?.id} className={`${item?.id === playing?.id ? 'play-now' : ''}`}>
+                    <div className="col col-1">
+                      <div className="playIcn"></div>
+                    </div>
+                    <div className="col col-2" onClick={async () => {
+                      const res = await (await getMusicDetail({ id: item.id })).data;
+                      this.props.MusicList.checkRepetition(res.songs[0]);
+                    }}>{item?.name}</div>
+                    <div className="col col-3">
+                      <div className="icns">
+                        <i className="ico icn-del" title="删除" onClick={()=>{
+                          this.props.MusicList.delMusicList(item);
+                        }}>删除</i>
+                      </div>
+                    </div>
+                    <div className="col col-4">
+                      {this.renderArt(item?.ar)}
+                    </div>
+                  </li>
+                })}
+              </ul>
+            </div>
+          </div>
         </div>
         <audio ref={ref => {
           this.audioRef = ref

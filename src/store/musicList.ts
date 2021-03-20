@@ -26,7 +26,14 @@ class MusicList {
   @observable playIndex: number = 0;
 
   @action addList = (music: any) => {
-    this.musicList.push(music)
+    let res = this.musicList.filter((item: any, index: number) => {
+      if (item.id !== music.id) {
+        return true;
+      }
+    })
+    if (res.length === this.musicList.length) {
+      this.musicList.push(music)
+    }
   }
 
   @action setPlayIndex = (num: number) => {
@@ -34,11 +41,19 @@ class MusicList {
     this.playing = this.musicList[num];
   }
 
-  @action getUserPlayList = async () => {
-    let musicList = window.localStorage.getItem('musicList')
-    if (musicList) {
-      musicList = JSON.parse(musicList);
-    }
+  @action delMusicList = (music: any) => {
+    this.musicList = this.musicList.filter((item, index) => {
+      if (item.id !== music.id) {
+        return true
+      } else {
+        if (index < this.playIndex) {
+          this.playIndex -= 1;
+        } else if (index === this.playIndex) {
+          this.playIndex += 1;
+          this.playing = this.musicList[this.playIndex];
+        }
+      }
+    })
   }
 
   @action changePlaying = (music: any) => {

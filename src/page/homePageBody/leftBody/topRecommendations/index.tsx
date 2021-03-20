@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { getHotRecommendations } from '@services/index';
 import './index.less'
+import { Link } from 'react-router-dom';
 
 interface HotR {
   id: number,
@@ -29,20 +30,20 @@ export default class TopRecommendations extends React.Component {
   render() {
     return <div className="top-recommendations">
       <div className="v-hd2">
-        <a href="/discover/playlist/" className="tit f-ff2 f-tdn">热门推荐</a>
+        <Link to="/discover/playlist/" className="tit f-ff2 f-tdn">热门推荐</Link>
         <div className="tab">
-          <a href="/discover/playlist/?cat=%E5%8D%8E%E8%AF%AD" className="s-fc3">华语</a>
+          <Link to="/discover/playlist/?cat=%E5%8D%8E%E8%AF%AD" className="s-fc3">华语</Link>
           <span className="line">|</span>
-          <a href="/discover/playlist/?cat=%E6%B5%81%E8%A1%8C" className="s-fc3">流行</a>
+          <Link to="/discover/playlist/?cat=%E6%B5%81%E8%A1%8C" className="s-fc3">流行</Link>
           <span className="line">|</span>
-          <a href="/discover/playlist/?cat=%E6%91%87%E6%BB%9A" className="s-fc3">摇滚</a>
+          <Link to="/discover/playlist/?cat=%E6%91%87%E6%BB%9A" className="s-fc3">摇滚</Link>
           <span className="line">|</span>
-          <a href="/discover/playlist/?cat=%E6%B0%91%E8%B0%A3" className="s-fc3">民谣</a>
+          <Link to="/discover/playlist/?cat=%E6%B0%91%E8%B0%A3" className="s-fc3">民谣</Link>
           <span className="line">|</span>
-          <a href="/discover/playlist/?cat=%E7%94%B5%E5%AD%90" className="s-fc3">电子</a>
+          <Link to="/discover/playlist/?cat=%E7%94%B5%E5%AD%90" className="s-fc3">电子</Link>
         </div>
         <span className="more">
-          <a href="/discover/playlist/" className="s-fc3">更多</a>
+          <Link to="/discover/playlist/" className="s-fc3">更多</Link>
           <i className="cor s-bg s-bg-6">&nbsp;</i>
         </span>
       </div>
@@ -52,7 +53,7 @@ export default class TopRecommendations extends React.Component {
             return <li key={item.id}>
               <div className="u-cover u-cover-1">
                 <img src={`${item.picUrl}?param=140y140`} />
-                <a title={item.name} href={`/playlist?id=${item.id}`} className="msk"></a>
+                <Link title={item.name} to={`/playlist?id=${item.id}`} className="msk"></Link>
                 <div className="bottom">
                   <a className="icon-play f-fr" title="播放"></a>
                   <span className="icon-headset"></span>
@@ -60,9 +61,9 @@ export default class TopRecommendations extends React.Component {
                 </div>
               </div>
               <p className="dec">
-                <a title={`${item.name}`} className="tit s-fc0" href={`/playlist?id=${item.id}`}>
+                <Link title={`${item.name}`} className="tit s-fc0" to={`/playlist?id=${item.id}`}>
                   {item.name}
-                </a>
+                </Link>
               </p>
             </li>
           })}
