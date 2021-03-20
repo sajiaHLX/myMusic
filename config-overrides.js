@@ -8,14 +8,15 @@ const {
 } = require('customize-cra');
 const path = require("path");
 module.exports = override(
-  ...addBabelPlugins( // 支持装饰器
-    [
-      '@babel/plugin-proposal-decorators',
-      {
-        legacy: true
-      }
-    ]
-  ),
+  addDecoratorsLegacy(),
+  // ...addBabelPlugins( // 支持装饰器
+  //   [
+  //     '@babel/plugin-proposal-decorators',
+  //     {
+  //       legacy: true
+  //     }
+  //   ]
+  // ),
   fixBabelImports('import', { // antd 按需加载
     libraryName: 'antd',
     libraryDirectory: 'es',

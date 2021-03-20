@@ -3,6 +3,8 @@ import { Layout } from 'antd';
 import MyHeader from '@components/Header';
 import MyPlayBar from '@components/Playbar';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { Provider } from 'mobx-react';
+import MusicList from '@store/musicList';
 import { RouteConfigProps, routes } from '../../routes';
 
 
@@ -28,15 +30,18 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <Layout>
-          <MyHeader></MyHeader>
-          <Content>
-            <Switch>{this.getRecursiveRoute(routes)}</Switch>
-          </Content>
-          <MyPlayBar />
-        </Layout>
-      </div>
+      <Provider MusicList={MusicList}>
+        <div className="App">
+          <Layout>
+            <MyHeader></MyHeader>
+
+            <Content>
+              <Switch>{this.getRecursiveRoute(routes)}</Switch>
+            </Content>
+            <MyPlayBar />
+          </Layout>
+        </div>
+      </Provider>
     )
   }
 }

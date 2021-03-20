@@ -1,8 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { getMusicUrl, checkMusic } from '@services/index';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import { Slider, message } from 'antd';
-import musicList from '@store/musicList';
 import './index.less'
 
 const PlayType = [
@@ -20,11 +19,20 @@ const PlayType = [
   }
 ]
 
+interface IAppProps {
+  MusicList?: any  //  这里比较关键 ？表示可或缺，如果没有就会报错。
+}
+
+@inject('MusicList')
 @observer
-export default class MyPlayBar extends React.Component {
+class MyPlayBar extends React.Component<IAppProps> {
   audioRef: HTMLAudioElement | null = null;
   myInterval: number | undefined;
   playTypeIndex: number = 0;
+
+  constructor(props: IAppProps) {
+    super(props);
+  }
 
   state = {
     isLock: false,
@@ -33,13 +41,11 @@ export default class MyPlayBar extends React.Component {
     stop: false,
     musicLong: 0,
     nowTime: 0,
-    musicList: musicList.musicList,
-    playing: musicList.playing,
-    playIndex: 0,
+    playing: this.props.MusicList.playing,
   }
 
   componentDidMount = async () => {
-    let { playing, musicList } = this.state;
+    let { musicList, playing } = this.props.MusicList;
     if (musicList.length === 0) return;
     playing = musicList[0];
     this.setState({
@@ -47,52 +53,45 @@ export default class MyPlayBar extends React.Component {
     }, () => {
       this.getMusicUrl();
     })
-
   }
 
   getMusicUrl = async (play?: boolean) => {
-    let { playing } = this.state;
+    let { playing, playIndex, musicList } = this.props.MusicList;
     if (!playing) return;
-    const check = await (await checkMusic({ id: playing.id })).data;
-    console.log(check, 'asd');
-    if (!check.success) {
-      message.error("版权方要求，当前专辑需单独付费，购买数字专辑即可无限畅享");
-      return;
-    }
-    const res = await (await getMusicUrl({ id: playing.id })).data;
-    this.setState({
-      url: res.data[0].url,
-    }, () => {
-      if (play) {
-        this.audioRef?.play();
-        this.getTime();
+    checkMusic({ id: playing.id }).then(async (resolve) => {
+      if (!playing) return;
+      const res = await (await getMusicUrl({ id: playing.id })).data;
+      this.setState({
+        url: res.data[0].url,
+      }, () => {
+        if (play) {
+          if (!this.audioRef) return;
+          this.getTime();
+          this.audioRef.play();
+        }
+      });
+    }).catch(err => {
+      window.clearInterval(this.myInterval);
+      message.error("版权方要求，当前专辑需单独付费，购买数字专辑即可无限畅享，自动播放下一首");
+      if (playIndex === musicList.length - 1) {
+        playIndex = 0;
+      } else {
+        playIndex += 1;
       }
-    });
-
+      this.props.MusicList.setPlayIndex(playIndex);
+      return;
+    })
   }
 
   getTime = () => {
-    const { playing, playIndex, musicList, musicLong } = this.state;
+    window.clearInterval(this.myInterval);
+    const { musicLong } = this.state;
     if (this.audioRef) {
       this.myInterval = setInterval(() => {
         if (!this.audioRef) return;
         if (this.audioRef.currentTime === this.audioRef.duration) {
           if (this.playTypeIndex === 0) {
-            if (playIndex < musicList.length - 1) {
-              this.setState({
-                playIndex: playIndex + 1,
-                playing: musicList[playIndex + 1],
-              }, () => {
-                this.getMusicUrl(true);
-              });
-            } else {
-              this.setState({
-                playIndex: 0,
-                playing: musicList[0],
-              }, () => {
-                this.getMusicUrl(true);
-              });
-            }
+            this.playNext();
           } else if (this.playTypeIndex === 1) {
             // 随机
           } else if (this.playTypeIndex === 2) {
@@ -105,6 +104,7 @@ export default class MyPlayBar extends React.Component {
         }
         this.setState({
           nowTime: this.audioRef.currentTime,
+          stop: true,
         });
       }, 1000) as unknown as number
     }
@@ -115,10 +115,53 @@ export default class MyPlayBar extends React.Component {
       this.setState({
         musicLong: this.audioRef.duration,
       });
-      console.log(this.audioRef.duration, '123123');
       return this.audioRef.duration;
     }
     return 0;
+  }
+
+  playPrev = () => {
+    const { musicList, playIndex } = this.props.MusicList;
+    window.clearInterval(this.myInterval);
+    if (playIndex > 0) {
+      this.setState({
+        playing: musicList[playIndex - 1],
+        stop: true,
+      }, () => {
+        this.getMusicUrl(true);
+        this.props.MusicList.setPlayIndex(playIndex - 1);
+      });
+    } else {
+      this.setState({
+        playing: musicList[musicList.length - 1],
+        stop: true,
+      }, () => {
+        this.getMusicUrl(true);
+        this.props.MusicList.setPlayIndex(musicList.length - 1);
+      });
+    }
+  }
+
+  playNext = () => {
+    const { musicList, playIndex } = this.props.MusicList;
+    window.clearInterval(this.myInterval);
+    if (playIndex < musicList.length - 1) {
+      this.setState({
+        playing: musicList[playIndex + 1],
+        stop: true,
+      }, () => {
+        this.getMusicUrl(true);
+        this.props.MusicList.setPlayIndex(playIndex + 1);
+      });
+    } else {
+      this.setState({
+        playing: musicList[0],
+        stop: true,
+      }, () => {
+        this.getMusicUrl(true);
+        this.props.MusicList.setPlayIndex(0);
+      });
+    }
   }
 
   dealTime = (duration: number) => {
@@ -129,8 +172,19 @@ export default class MyPlayBar extends React.Component {
     return time
   }
 
+  storeChange = (playing: any) => {
+    if (playing?.id !== this.state.playing?.id) {
+      this.setState({
+        playing: this.props.MusicList.playing,
+      }, () => {
+        this.getMusicUrl(true);
+      });
+    }
+  }
+
   render() {
     const { isLock, isShowVoice, stop, musicLong, playing } = this.state;
+    this.storeChange(this.props.MusicList.playing);
     let showVoice: 'visible' | 'hidden' = `${isShowVoice ? 'visible' : 'hidden'}` as 'visible' | 'hidden';
     return (
       <div className="wrap">
@@ -149,25 +203,7 @@ export default class MyPlayBar extends React.Component {
           <div className="action-wrap">
             <div className="btns">
               <a className="prv" title="上一首(ctrl+←)" onClick={() => {
-                const { playIndex, musicList } = this.state;
-                window.clearInterval(this.myInterval);
-                if (playIndex > 0) {
-                  this.setState({
-                    playIndex: playIndex - 1,
-                    playing: musicList[playIndex - 1],
-                    stop: true,
-                  }, () => {
-                    this.getMusicUrl(true);
-                  });
-                } else {
-                  this.setState({
-                    playIndex: musicList.length - 1,
-                    playing: musicList[musicList.length - 1],
-                    stop: true,
-                  }, () => {
-                    this.getMusicUrl(true);
-                  });
-                }
+                this.playPrev();
               }}>上一首</a>
               <a className={`ply ${stop ? 'stop' : ''}`} title="播放/暂停(p)" onClick={() => {
                 if (!stop) {
@@ -182,25 +218,7 @@ export default class MyPlayBar extends React.Component {
                 })
               }}>播放/暂停</a>
               <a className="nxt" title="下一首(ctrl+→)" onClick={() => {
-                const { playIndex, musicList } = this.state;
-                window.clearInterval(this.myInterval);
-                if (playIndex < musicList.length - 1) {
-                  this.setState({
-                    playIndex: playIndex + 1,
-                    playing: musicList[playIndex + 1],
-                    stop: true,
-                  }, () => {
-                    this.getMusicUrl(true);
-                  });
-                } else {
-                  this.setState({
-                    playIndex: 0,
-                    playing: musicList[0],
-                    stop: true,
-                  }, () => {
-                    this.getMusicUrl(true);
-                  });
-                }
+                this.playNext();
               }}>下一首</a>
             </div>
             <div className="head">
@@ -267,11 +285,12 @@ export default class MyPlayBar extends React.Component {
               }} />
               <span className="add f-pr">
                 <span className="tip" style={{ display: 'none' }}>已添加到播放列表</span>
-                <a title="播放列表" className="icn-list">1</a>
+                <a title="播放列表" className="icn-list">{this.props.MusicList.musicList.length}</a>
               </span>
               <div className="tip tip-1" style={{ display: 'none' }}>循环</div>
             </div>
           </div>
+
         </div>
         <audio ref={ref => {
           this.audioRef = ref
@@ -280,3 +299,5 @@ export default class MyPlayBar extends React.Component {
     )
   }
 }
+
+export default MyPlayBar;

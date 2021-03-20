@@ -13,29 +13,31 @@ interface Item {
 @observer
 export default class TopList extends React.Component {
   state = {
-    fastUpList: [],
-    newList: [],
-    originalList: []
+    showFastUpList: [],
+    showNewList: [],
+    showOriginalList: []
   }
+
   componentDidMount = async () => {
     const res = await (await getTopListFastUp()).data;
     const res1 = await (await getNewSongList()).data;
     const res2 = await (await getOriginalList()).data;
     this.setState({
-      fastUpList: res.playlist.tracks.slice(0, 10),
-      newList: res1.playlist.tracks.slice(0, 10),
-      originalList: res2.playlist.tracks.slice(0, 10),
+      showFastUpList: res.playlist.tracks.slice(0, 10),
+      showNewList: res1.playlist.tracks.slice(0, 10),
+      showOriginalList: res2.playlist.tracks.slice(0, 10),
     });
   }
 
   renderAction = (item: any) => {
     return <div className="oper">
       <a className="s-bg" title="播放" onClick={async () => {
-        const res = await (await getMusicDetail({id: item.id})).data;
-        console.log(item, '123', res.songs[0]);
+        const res = await (await getMusicDetail({ id: item.id })).data;
+        MusicList.checkRepetition(res.songs[0]);
       }}></a>
-      <a className="u-icn" title="添加到播放列表" onClick={() => {
-        console.log(item, '123');
+      <a className="u-icn" title="添加到播放列表" onClick={async () => {
+        const res = await (await getMusicDetail({ id: item.id })).data;
+        MusicList.addList(res.songs[0]);
       }}></a>
       <a className="record" title="收藏"></a>
     </div>
@@ -62,14 +64,16 @@ export default class TopList extends React.Component {
                 <h3 className="f-fs1 f-thide">飙升榜</h3>
               </a>
               <div className="btn">
-                <a className="play">播放</a>
+                <a className="play" onClick={()=>{
+                  MusicList.changePlayList(this.state.showFastUpList);
+                }}>播放</a>
                 <a className="subscribe-flag">收藏</a>
               </div>
             </div>
           </dt>
           <dd>
             <ol>
-              {this.state.fastUpList.map((item: Item, index) => {
+              {this.state.showFastUpList.map((item: Item, index) => {
                 return <li key={index}>
                   <span className={`no ${(index + 1) <= 3 ? 'no-top' : ''}`}>{index + 1}</span>
                   <a href={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</a>
@@ -97,7 +101,7 @@ export default class TopList extends React.Component {
           </dt>
           <dd>
             <ol>
-              {this.state.newList.map((item: Item, index) => {
+              {this.state.showNewList.map((item: Item, index) => {
                 return <li key={index}>
                   <span className={`no ${(index + 1) <= 3 ? 'no-top' : ''}`}>{index + 1}</span>
                   <a href={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</a>
@@ -125,7 +129,7 @@ export default class TopList extends React.Component {
           </dt>
           <dd>
             <ol>
-              {this.state.originalList.map((item: Item, index) => {
+              {this.state.showOriginalList.map((item: Item, index) => {
                 return <li key={index}>
                   <span className={`no ${(index + 1) <= 3 ? 'no-top' : ''}`}>{index + 1}</span>
                   <a href={`/song?id=${item.id}`} className="nm" title={item.name}>{item.name}</a>

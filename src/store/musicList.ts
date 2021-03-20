@@ -1,4 +1,5 @@
 import { action, observable } from "mobx";
+import { threadId } from "worker_threads";
 
 export interface Playing {
   name: string,
@@ -16,45 +17,21 @@ export interface Playing {
 }
 
 class MusicList {
-  @observable musicList: Playing[] = [
-    {
-      "name": "陷",
-      "id": 1829850316,
-      "ar": [
-        {
-          "id": 13057513,
-          "name": "朱正廷",
-        }
-      ],
-      "al": {
-        "id": 124574443,
-        "name": "陷",
-        "picUrl": "http://p4.music.126.net/oybBmblKQJYZi0qLKocUYA==/109951165811454756.jpg",
-      },
-      "mv": 0,
-    },
-    {
-      "name": "爱就一个字",
-      "id": 1828026086,
-      "ar": [
-        {
-          "id": 47091532,
-          "name": "王赫野",
-        }
-      ],
-      "al": {
-        "id": 124351705,
-        "name": "爱就一个字（吉他版）",
-        "picUrl": "http://p3.music.126.net/sXY3pJFHq2WVDkv7tpWUJw==/109951165808483827.jpg",
-      },
-      "mv": 0,
-    },
-  ];
+  @observable onChange: boolean = false;
 
-  @observable playing: Playing | undefined = undefined;
+  @observable musicList: any[] = [];
 
-  @action addList = (music: Playing) => {
+  @observable playing: any | undefined = undefined;
+
+  @observable playIndex: number = 0;
+
+  @action addList = (music: any) => {
     this.musicList.push(music)
+  }
+
+  @action setPlayIndex = (num: number) => {
+    this.playIndex = num;
+    this.playing = this.musicList[num];
   }
 
   @action getUserPlayList = async () => {
@@ -66,6 +43,27 @@ class MusicList {
 
   @action changePlaying = (music: any) => {
     this.playing = music
+  }
+
+  @action checkRepetition = (newMusic: any) => {
+    let res = this.musicList.filter((item: any, index: number) => {
+      if (item.id === newMusic.id) {
+        this.playIndex = index;
+        return true;
+      }
+    })
+    if (res.length === 0) {
+      this.addList(newMusic);
+      this.playIndex = this.musicList.length - 1;
+    }
+    this.playing = { ...newMusic };
+    this.onChange = true;
+  }
+
+  @action changePlayList = (newMusicList: any) => {
+    this.musicList = newMusicList;
+    this.playIndex = 0;
+    this.playing = newMusicList[0];
   }
 }
 
