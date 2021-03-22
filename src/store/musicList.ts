@@ -80,6 +80,23 @@ class MusicList {
     this.playIndex = 0;
     this.playing = newMusicList[0];
   }
+
+  @action addPlayList = (newList: any) => {
+    let json = this.musicList.concat(newList); //两个数组对象合并
+    for (let item1 of json) {  //循环json数组对象的内容
+      let flag = true;  //建立标记，判断数据是否重复，true为不重复
+      for (let item2 of this.musicList) {  //循环新数组的内容
+        if (item1.id == item2.id) { //让json数组对象的内容与新数组的内容作比较，相同的话，改变标记为false
+          flag = false;
+        }
+      }
+      if (flag) { //判断是否重复
+        this.musicList.push(item1); //不重复的放入新数组。  新数组的内容会继续进行上边的循环。
+      }
+    }
+    // this.musicList
+  }
+
 }
 
 const musicList = new MusicList();

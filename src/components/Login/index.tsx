@@ -6,7 +6,6 @@ import { Form, Input, message } from 'antd';
 import { phone } from '@utils/checkers';
 import { FormInstance } from 'antd/lib/form';
 import { PhoneLogin } from '@services/index';
-import { Link } from 'react-router-dom';
 import './index.less'
 
 enum LoginType {
@@ -111,9 +110,9 @@ class LoginModal extends React.Component {
                 })
               }} />
               <label style={{ marginLeft: '2px' }}>同意</label>
-              <Link to="http://st.music.163.com/official-terms/service" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《服务条款》</Link>
-              <Link to="http://st.music.163.com/official-terms/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《隐私政策》</Link>
-              <Link to="https://st.music.163.com/official-terms/children" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《儿童隐私政策》</Link>
+              <a href="http://st.music.163.com/official-terms/service" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《服务条款》</a>
+              <a href="http://st.music.163.com/official-terms/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《隐私政策》</a>
+              <a href="https://st.music.163.com/official-terms/children" target="_blank" rel="noopener noreferrer" style={{ color: '#507DAF' }}>《儿童隐私政策》</a>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getTopListFastUp, getNewSongList, getOriginalList } from '@services/index';
+import { getPlayList } from '@services/index';
 import { observer } from 'mobx-react';
 import MusicList from '@store/musicList';
 import { getMusicDetail } from '@services/index';
@@ -20,9 +20,9 @@ export default class TopList extends React.Component {
   }
 
   componentDidMount = async () => {
-    const res = await (await getTopListFastUp()).data;
-    const res1 = await (await getNewSongList()).data;
-    const res2 = await (await getOriginalList()).data;
+    const res = await (await getPlayList({ id: 19723756 })).data;
+    const res1 = await (await getPlayList({ id: 3779629 })).data;
+    const res2 = await (await getPlayList({ id: 2884035 })).data;
     this.setState({
       showFastUpList: res.playlist.tracks.slice(0, 10),
       showNewList: res1.playlist.tracks.slice(0, 10),
@@ -65,7 +65,7 @@ export default class TopList extends React.Component {
                 <h3 className="f-fs1 f-thide">飙升榜</h3>
               </Link>
               <div className="btn">
-                <a className="play" onClick={()=>{
+                <a className="play" onClick={() => {
                   MusicList.changePlayList(this.state.showFastUpList);
                 }}>播放</a>
                 <a className="subscribe-flag">收藏</a>
@@ -95,7 +95,9 @@ export default class TopList extends React.Component {
                 <h3 className="f-fs1 f-thide">新歌榜</h3>
               </Link>
               <div className="btn">
-                <a className="play">播放</a>
+                <a className="play" onClick={() => {
+                  MusicList.changePlayList(this.state.showNewList);
+                }}>播放</a>
                 <a className="subscribe-flag">收藏</a>
               </div>
             </div>
@@ -123,7 +125,9 @@ export default class TopList extends React.Component {
                 <h3 className="f-fs1 f-thide">原创榜</h3>
               </Link>
               <div className="btn">
-                <a className="play">播放</a>
+                <a className="play" onClick={() => {
+                  MusicList.changePlayList(this.state.showOriginalList);
+                }}>播放</a>
                 <a className="subscribe-flag">收藏</a>
               </div>
             </div>

@@ -61,6 +61,7 @@
     "mini-css-extract-plugin": "0.11.3",
     "mobx": "^5.15.7",
     "mobx-react": "^6.3.0",
+    "moment": "^2.29.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
@@ -128,5 +129,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9001"
+  "proxy": "http://localhost:9001",
+  "devDependencies": {
+    "@types/react-infinite-scroller": "^1.2.1"
+  }
 }

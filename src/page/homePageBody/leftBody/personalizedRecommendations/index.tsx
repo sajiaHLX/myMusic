@@ -48,12 +48,14 @@ export default class PersonalizedRecommendations extends React.Component {
   state = {
     persona: [],
   }
+
   componentDidMount = async () => {
     const res = await (await getPersonalizedRecommendations()).data;
     this.setState({
       persona: res.recommend.slice(0, 3),
     })
   }
+
   render() {
     return <div className="personalized-recommendations">
       <div className="v-hd2">

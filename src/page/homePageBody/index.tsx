@@ -64,9 +64,6 @@ export default class PageBody extends React.Component {
           </div>
         </div>
       </div>
-      <div className="my-name-hlx">
-        <span>made by Helinxiao</span>
-      </div>
     </div>;
   }
 }

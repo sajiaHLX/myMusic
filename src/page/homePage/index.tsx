@@ -2,14 +2,16 @@ import React from 'react';
 import { Layout } from 'antd';
 import MyHeader from '@components/Header';
 import MyPlayBar from '@components/Playbar';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, RouteComponentProps, BrowserRouter } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import MusicList from '@store/musicList';
 import { RouteConfigProps, routes } from '../../routes';
+import './index.less'
 
+interface IProps extends RouteComponentProps { }
 
 const { Content } = Layout;
-class App extends React.Component {
+class App extends React.Component<IProps> {
 
   getRecursiveRoute = (routeConfigs: RouteConfigProps[], parentRoute: string = ''): any =>
     routeConfigs.map(config => {
@@ -34,12 +36,14 @@ class App extends React.Component {
         <div className="App">
           <Layout>
             <MyHeader></MyHeader>
-
             <Content>
-              <Switch>{this.getRecursiveRoute(routes)}</Switch>
+              <Switch>{this.getRecursiveRoute(routes as any)}</Switch>
             </Content>
             <MyPlayBar />
           </Layout>
+          <div className="my-name-hlx">
+            <span>made by Helinxiao</span>
+          </div>
         </div>
       </Provider>
     )

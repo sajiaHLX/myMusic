@@ -26,7 +26,7 @@ export default class NewCD extends React.Component {
   componentDidMount = async () => {
     const res = await (await getNewCD()).data
     this.setState({
-      newCD: res.weekData.slice(0, 10),
+      newCD: res.monthData.slice(0, 10),
     })
   }
   render() {

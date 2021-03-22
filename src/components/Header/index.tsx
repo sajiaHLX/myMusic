@@ -1,11 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Input, Avatar } from 'antd';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
 import { ShowLoginModal } from '@components/Login';
 import './index.less';
 
+// interface IProps{
+//   location
+// }
+
+interface IProps extends RouteComponentProps { }
 @observer
 class Header extends React.Component {
   state = {
@@ -15,15 +20,15 @@ class Header extends React.Component {
     isLogin: window.localStorage.getItem('token') ? true : false,
   }
 
+  componentDidMount() {
+    // console.log(this.props.location);
+  }
+
   changeI = (_e: any, index: number) => this.setState({ onC: index })
   render() {
     let menu = [
       { name: '发现音乐', path: '/' },
       { name: '我的音乐', path: '/myMusic' },
-      { name: '朋友', path: '/friend' },
-      { name: '商城', path: '/store' },
-      { name: '音乐人', path: '/music-p' },
-      { name: '下载客户端', path: '/download' },
     ];
     let sMenu = [
       { name: '推荐', path: '/' },
@@ -42,7 +47,6 @@ class Header extends React.Component {
           <ul className="nav">
             {
               menu.map((item, index) => {
-                // console.log(index);
                 return <li key={index}>
                   <span className={this.state.onC === index ? 'cho' : ''} >
                     <Link to={item.path} onClick={() => {
@@ -130,7 +134,9 @@ class Header extends React.Component {
                   sMenu.map((item, index) => {
                     return (
                       <li key={index}>
-                        <Link onClick={() => this.setState({ sIndex: index })} to={item.path}><strong className={this.state.sIndex === index ? 'cho-h2' : ''}>{item.name}</strong></Link>
+                        <Link onClick={() => this.setState({ sIndex: index })} to={item.path}>
+                          <strong className={this.state.sIndex === index ? 'cho-h2' : ''}>{item.name}</strong>
+                        </Link>
                       </li>
                     )
                   })

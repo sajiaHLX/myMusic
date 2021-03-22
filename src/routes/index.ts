@@ -4,6 +4,7 @@ import Home from '@page/findMusic';
 import MyMusic from '@page/myMusic';
 import HomePage from '@page/homePage';
 import HomePageBody from '@page/homePageBody';
+import PlayList from '@page/playList';
 
 export interface RouteConfigProps extends RouteProps {
   route: string;
@@ -21,11 +22,11 @@ export const routes = [
       {
         route: '/',
         component: HomePageBody,
-      }
+      },
     ],
   },
   {
-    route: '/myMusic',
-    component: MyMusic
-  },
+    route: '/playlist',
+    component: PlayList,
+  }
 ];

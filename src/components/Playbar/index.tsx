@@ -276,7 +276,6 @@ class MyPlayBar extends React.Component<IAppProps> {
             </div>
             <div className="oper">
               <a className="icn-add" title="收藏">收藏</a>
-              <a className="icn-share" title="分享">分享</a>
             </div>
             <div className="ctrl">
               <div className="m-vol" style={{ visibility: showVoice }}>
@@ -301,7 +300,7 @@ class MyPlayBar extends React.Component<IAppProps> {
                 <a title="播放列表" className="icn-list" onClick={() => {
                   this.setState({
                     showPlayList: !showPlayList,
-                    isLock: !isLock,
+                    isLock: true,
                   })
                 }}>{this.props.MusicList.musicList.length}</a>
               </span>
