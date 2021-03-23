@@ -1,7 +1,18 @@
 import * as React from 'react';
 import { getPersonalizedRecommendations } from '@services/index';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import './index.less';
+
+enum week {
+  '一' = 1,
+  '二',
+  '三',
+  '四',
+  '五',
+  '六',
+  '七',
+}
 
 interface Persona {
   id: number,
@@ -65,8 +76,8 @@ export default class PersonalizedRecommendations extends React.Component {
         <ul className="li-wrap">
           <li className="everyday">
             <p title="每日歌曲推荐" className="date">
-              <span className="head">星期一</span>
-              <span className="bd">15</span>
+              <span className="head">星期{week[+moment().format('E')]}</span>
+              <span className="bd">{moment().get('date')}</span>
               <Link className="mask" title="每日歌曲推荐" to="/discover/recommend/taste"></Link>
             </p>
             <p className="dec">

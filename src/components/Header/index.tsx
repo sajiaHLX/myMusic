@@ -20,10 +20,6 @@ class Header extends React.Component {
     isLogin: window.localStorage.getItem('token') ? true : false,
   }
 
-  componentDidMount() {
-    // console.log(this.props.location);
-  }
-
   changeI = (_e: any, index: number) => this.setState({ onC: index })
   render() {
     let menu = [

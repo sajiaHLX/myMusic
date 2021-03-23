@@ -1,0 +1,237 @@
+.play-list-daily {
+  width: 709px;
+  margin: 0 auto;
+  padding: 47px 30px 40px 39px;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #d3d3d3;
+
+  .music-info {
+    .bg {
+      background: url(../../assets/recmd_daily.jpeg) no-repeat;
+      width: 640px;
+      height: 179px;
+      padding-top: 1px;
+      visibility: visible;
+
+      .cal {
+        background: url(../../assets/date.png) no-repeat 0 9999px;
+        position: relative;
+        zoom: 1;
+        display: block;
+        width: 114px;
+        height: 114px;
+        background-position: 0 -270px;
+        float: left;
+        margin: 34px 0 0 54px;
+
+        .head {
+          display: block;
+          color: #fed9d9;
+          text-shadow: 0 -1px #962626;
+          text-align: center;
+          height: 26px;
+          line-height: 26px;
+          font-size: 12px;
+          font-weight: 500;
+        }
+
+        .bd {
+          display: block;
+          text-align: center;
+          font-family: Arial, Helvetica, sans-serif;
+          font-weight: bold;
+          color: #202020;
+          font-size: 74px;
+          line-height: 80px;
+        }
+
+        .mask {
+          background: url(../../assets/date.png) no-repeat 0 9999px;
+          position: absolute;
+          left: 0;
+          width: 142px;
+          height: 107px;
+          top: 26px;
+          background-position: 0 -400px;
+        }
+      }
+    }
+
+    .btn-wrap {
+      margin-top: 30px;
+      visibility: visible;
+
+      .btn {
+        float: left;
+        margin-right: 8px;
+
+        .play {
+          background: url(../../assets/button2.png) no-repeat 0 9999px;
+          display: block;
+          height: 31px;
+          line-height: 31px;
+          overflow: hidden;
+          text-align: center;
+          cursor: pointer;
+          padding: 0 5px 0 0;
+          white-space: nowrap;
+          text-decoration: none;
+          color: #fff;
+          background-position: right -428px;
+          float: left;
+
+          i {
+            background: url(../../assets/button2.png) no-repeat 0 9999px;
+            display: inline-block;
+            height: 31px;
+            line-height: 31px;
+            overflow: hidden;
+            vertical-align: top;
+            text-align: center;
+            cursor: pointer;
+            pointer-events: none;
+            color: #fff;
+            background-position: 0 -387px;
+            padding: 0 7px 0 8px;
+            font-style: normal;
+            font-weight: 500;
+
+            .ply {
+              white-space: nowrap;
+              line-height: 31px;
+              pointer-events: none;
+              color: #fff;
+              font-style: normal;
+              text-align: left;
+              font-size: inherit;
+              cursor: pointer;
+              background: url(../../assets/button2.png) no-repeat 0 9999px;
+              float: left;
+              width: 20px;
+              height: 18px;
+              margin: 6px 2px 2px 0;
+              background-position: 0 -1622px;
+              overflow: hidden;
+            }
+          }
+        }
+
+        .add {
+          background: url(../../assets/button2.png) no-repeat 0 9999px;
+          float: left;
+          height: 31px;
+          line-height: 30px;
+          min-width: 23px;
+          cursor: pointer;
+          padding: 0 5px 0 0;
+          white-space: nowrap;
+          color: #333;
+          text-decoration: none;
+          width: 31px;
+          margin-left: -3px;
+          padding-right: 0;
+          background-position: 0 -1588px;
+        }
+      }
+    }
+  }
+
+  .music-table {
+    margin-top: 27px;
+
+    .u-title {
+      border-bottom: 2px solid #c20c0c;
+      height: 33px;
+
+      h3 {
+        padding: 0;
+        margin: 0;
+        float: left;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 28px;
+      }
+
+      .sub {
+        color: #666;
+        float: left;
+        margin: 9px 0 0 20px;
+      }
+
+      .more {
+        color: #666;
+        float: right;
+        margin-top: 5px;
+
+        #play-count {
+          color: #c20c0c;
+        }
+      }
+    }
+
+    .table-wrap {
+      .my-table {
+        border: 1px solid #d9d9d9;
+
+        tr {
+          height: 38px;
+        }
+
+        th {
+          font-size: 12px;
+          background: url(../../assets/table.png) no-repeat 0 9999px;
+          vertical-align: middle;
+          font-weight: normal;
+          color: #666;
+          height: 38px;
+          background-color: #f7f7f7;
+          background-position: 0 2px;
+          background-repeat: repeat-x;
+          margin: 0;
+          padding: 8px 10px;
+          border-right: 1px solid #d9d9d9;
+        }
+
+        td {
+          padding: 6px 10px;
+          line-height: 18px;
+          text-align: left;
+          font-size: 12px;
+
+          .ply {
+            background: url(../../assets/table.png) no-repeat 0 9999px;
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+            background-position: 0 -103px;
+            float: right;
+          }
+
+          .playing {
+            background-position: -20px -128px;
+          }
+        }
+
+        th:nth-child(5) {
+          border-right: 0;
+        }
+
+        .text {
+          width: 100%;
+          position: relative;
+          zoom: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          color: #333;
+          font-weight: 500;
+        }
+
+        .dark-row {
+          background-color: #f7f7f7;
+        }
+      }
+    }
+  }
+}

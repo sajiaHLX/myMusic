@@ -3,3 +3,12 @@ export function phone(val?: string) {
     return '手机号必须为 11 位数字';
   }
 }
+
+export function checkLogin() {
+  let token = window.localStorage.getItem('token');
+  if(token){
+    return true;
+  }else {
+    return false;
+  }
+}

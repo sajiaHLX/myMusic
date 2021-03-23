@@ -5,6 +5,8 @@ import MyMusic from '@page/myMusic';
 import HomePage from '@page/homePage';
 import HomePageBody from '@page/homePageBody';
 import PlayList from '@page/playList';
+import Recommend from '@page/recommend';
+import SongDetail from '@page/songDetail';
 
 export interface RouteConfigProps extends RouteProps {
   route: string;
@@ -28,5 +30,13 @@ export const routes = [
   {
     route: '/playlist',
     component: PlayList,
+  },
+  {
+    route: '/discover/recommend/taste',
+    component: Recommend,
+  },
+  {
+    route: '/song',
+    component: SongDetail,
   }
 ];

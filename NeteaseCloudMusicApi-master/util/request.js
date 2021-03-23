@@ -85,7 +85,7 @@ const createRequest = (method, url, data, options) => {
       const header = {
         osver: cookie.osver, //系统版本
         deviceId: cookie.deviceId, //encrypt.base64.encode(imei + '\t02:00:00:00:00:00\t5106025eb79a5247\t70ffbaac7')
-        appver: cookie.appver || '6.1.1', // app版本
+        appver: cookie.appver || '8.0.0', // app版本
         versioncode: cookie.versioncode || '140', //版本号
         mobilename: cookie.mobilename, //设备model
         buildver: cookie.buildver || Date.now().toString().substr(0, 10),
@@ -111,7 +111,7 @@ const createRequest = (method, url, data, options) => {
     }
 
     const answer = { status: 500, body: {}, cookie: [] }
-    const settings = {
+    let settings = {
       method: method,
       url: url,
       headers: headers,
@@ -143,7 +143,12 @@ const createRequest = (method, url, data, options) => {
         }
       }
     }
-
+    if (options.crypto === 'eapi') {
+      settings = {
+        ...settings,
+        responseType: 'arraybuffer',
+      }
+    }
     axios(settings)
       .then((res) => {
         const body = res.data
@@ -151,12 +156,22 @@ const createRequest = (method, url, data, options) => {
           x.replace(/\s*Domain=[^(;|$)]+;*/, ''),
         )
         try {
-          answer.body = body
+          if (options.crypto === 'eapi') {
+            answer.body = JSON.parse(encrypt.decrypt(body).toString())
+          } else {
+            answer.body = body
+          }
+
           answer.status = answer.body.code || res.status
-          if (answer.body.code === 502) {
+          if (
+            [201, 302, 400, 502, 800, 801, 802, 803].indexOf(answer.body.code) >
+            -1
+          ) {
+            // 特殊状态码
             answer.status = 200
           }
         } catch (e) {
+          // console.log(e)
           answer.body = body
           answer.status = res.status
         }

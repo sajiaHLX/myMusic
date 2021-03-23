@@ -3,8 +3,9 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import qs from 'querystring';
 import { Table, Input, Comment, List, Pagination, message } from 'antd';
-import { getPlayList, getMusicDetail, getCommentList, sendComment } from '@services/index';
+import { getPlayList, getMusicDetail, getCommentList, sendComment, commentLike } from '@services/index';
 import moment from 'moment';
+import { checkLogin } from '@utils/checkers';
 import './index.less';
 
 const { TextArea } = Input;
@@ -90,7 +91,6 @@ class PlayList extends React.Component<IProps, IState> {
 
           }}>
             <Link to={`/song?id=${record.id}`} title={item}>{item}</Link>
-            {/* <a>{item}</a> */}
           </div>
         }
       },
@@ -135,7 +135,21 @@ class PlayList extends React.Component<IProps, IState> {
         <div className="time">
           {moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
           <a>
-            <i className="zan"></i> ({item.likedCount})
+            <i className={`zan ${item.liked ? 'liked' : ''}`} onClick={async () => {
+              if (!checkLogin()) return message.error('请登录！');
+              let t = item.liked ? 0 : 1;
+              const res = await (await commentLike({
+                t,
+                type: 2,
+                id: +this.state.playListId,
+                cid: item.commentId,
+              })).data;
+              if (res.code === 200) {
+                this.getCommentList();
+              } else {
+                message.error('点赞失败！请稍后重试！')
+              }
+            }}></i> ({item.likedCount})
         </a>
         </div>
       )}
@@ -149,7 +163,6 @@ class PlayList extends React.Component<IProps, IState> {
   render() {
     const { playListDetail, commentList, pageNo, myComment, playListId } = this.state;
     const { playing } = this.props.MusicList;
-    console.log(commentList.hotComments, '123');
     return <div className="play-list-detail">
       <div className="music-info clear">
         <div className="cover">
@@ -253,7 +266,8 @@ class PlayList extends React.Component<IProps, IState> {
                 <div className="btns">
                   <a className="btn" onClick={async () => {
                     let content = myComment.trim();
-                    if (!content) message.warning('请填写内容！');
+                    if (!checkLogin()) return message.error('请登录！');
+                    if (!content) return message.warning('请填写内容！');
                     const res = await (await sendComment({
                       t: 1,
                       type: 2,
@@ -262,6 +276,9 @@ class PlayList extends React.Component<IProps, IState> {
                     })).data;
                     if (res.code === 200) {
                       message.success("评论成功！");
+                      this.setState({
+                        myComment: '',
+                      })
                       this.getCommentList();
                     } else {
                       message.error('评论失败！请稍后重试！')
