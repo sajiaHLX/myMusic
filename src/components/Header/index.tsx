@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Input, Avatar } from 'antd';
 import { SearchOutlined, UserOutlined } from '@ant-design/icons';
 import { observer } from 'mobx-react';
@@ -12,7 +12,7 @@ import './index.less';
 
 interface IProps extends RouteComponentProps { }
 @observer
-class Header extends React.Component {
+class Header extends React.Component<IProps> {
   state = {
     onC: 0,
     sIndex: 0,
@@ -117,7 +117,9 @@ class Header extends React.Component {
             </span>
             <Link className="create-c" to="">创作者中心</Link>
             <div className="search">
-              <Input className="ser-i" prefix={<SearchOutlined />} placeholder="音乐/视频/用户/电台" />
+              <Input className="ser-i" prefix={<SearchOutlined />} placeholder="音乐/视频/用户/电台" onPressEnter={(e: any) => {
+                this.props.history.push(`/search?s=${e.target.value}&type=1`)
+              }} />
             </div>
           </div>
         </div>
@@ -147,4 +149,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

@@ -7,6 +7,7 @@ import HomePageBody from '@page/homePageBody';
 import PlayList from '@page/playList';
 import Recommend from '@page/recommend';
 import SongDetail from '@page/songDetail';
+import SearchPage from '@page/searchPage';
 
 export interface RouteConfigProps extends RouteProps {
   route: string;
@@ -38,5 +39,9 @@ export const routes = [
   {
     route: '/song',
     component: SongDetail,
+  },
+  {
+    route: '/search',
+    component: SearchPage,
   }
 ];

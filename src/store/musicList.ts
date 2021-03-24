@@ -1,5 +1,4 @@
 import { action, observable } from "mobx";
-import { threadId } from "worker_threads";
 
 export interface Playing {
   name: string,
@@ -17,6 +16,8 @@ export interface Playing {
 }
 
 class MusicList {
+  @observable userInfo: any = JSON.parse(window.localStorage.getItem('profile') || '');
+
   @observable onChange: boolean = false;
 
   @observable musicList: any[] = [];

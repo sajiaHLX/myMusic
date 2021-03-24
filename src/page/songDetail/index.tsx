@@ -3,7 +3,7 @@ import { RouteComponentProps, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import qs from 'querystring';
 import { Input, Comment, List, Pagination, message } from 'antd';
-import { sendComment, commentLike, getSongCommentList, getMusicDetail } from '@services/index';
+import { sendComment, commentLike, getSongCommentList, getMusicDetail, getSongLyric } from '@services/index';
 import moment from 'moment';
 import { checkLogin } from '@utils/checkers';
 import './index.less';
@@ -17,6 +17,8 @@ interface IState {
   commentList: any,
   pageNo: number,
   myComment: string,
+  showLyrics: boolean,
+  lyrics: string[],
 }
 
 interface IProps extends RouteComponentProps {
@@ -33,6 +35,8 @@ class SongDetail extends React.Component<IProps, IState> {
     commentList: {},
     pageNo: 0,
     myComment: '',
+    showLyrics: false,
+    lyrics: [],
   }
 
 
@@ -40,10 +44,15 @@ class SongDetail extends React.Component<IProps, IState> {
     let songId = qs.parse(this.props.location.search.replace(/^\?/, '')).id
     const songDetail = await (await getMusicDetail({ id: +songId })).data;
     const commentList = await (await getSongCommentList({ id: +songId })).data;
+    const lyrics = await (await getSongLyric({ id: +songId })).data;
+    let lyricsList = lyrics.lrc.lyric.split('\n').map((item: string) => {
+      return item.split(']')[1];
+    });
     this.setState({
       songId,
       commentList,
       songDetail: songDetail.songs[0],
+      lyrics: lyricsList,
     });
   }
 
@@ -58,7 +67,7 @@ class SongDetail extends React.Component<IProps, IState> {
   renderArt = (ar: any) => {
     return ar.map((item: { name: string; id: number; }, index: number) => {
       return <span key={index} title={item.name}>
-        <Link to={`/artist?id=${item.id}`}>{item.name}</Link>
+        <Link className="link" to={`/artist?id=${item.id}`}>{item.name}</Link>
         {ar.length === index + 1 ? '' : '/'}
       </span>
     })
@@ -84,7 +93,7 @@ class SongDetail extends React.Component<IProps, IState> {
               let t = item.liked ? 0 : 1;
               const res = await (await commentLike({
                 t,
-                type: 2,
+                type: 0,
                 id: +this.state.songId,
                 cid: item.commentId,
               })).data;
@@ -105,7 +114,7 @@ class SongDetail extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { songDetail, commentList, pageNo, myComment, songId } = this.state;
+    const { songDetail, commentList, pageNo, myComment, songId, showLyrics, lyrics } = this.state;
     const { playing } = this.props.MusicList;
     return <div className="song-detail">
       <div className="song-info clear">
@@ -113,6 +122,64 @@ class SongDetail extends React.Component<IProps, IState> {
           <div className="u-cover">
             <img src={`${songDetail.al?.picUrl}?param=130y130`} className="j-img" />
             <span className="msk"></span>
+          </div>
+        </div>
+        <div className="info-wrap">
+          <div className="hd">
+            <i className="lab"></i>
+            <div className="tit">
+              <em className="f-tit">{songDetail.name}</em>
+              <a title="播放mv" href="/mv?id=10946911">
+                <i className="icn u-icn u-icn-2"></i>
+              </a>
+              <div className="subtit">{songDetail.alia ? songDetail.alia[0] : ''}</div>
+            </div>
+          </div>
+          <p className="des">歌手：
+            <span title="Michele Morrone">
+              {this.renderArt(songDetail.ar || [])}
+            </span>
+          </p>
+          <p className="des">所属专辑：
+            <Link to={`/album?id=${songDetail.al?.id}`} className="link">
+              {songDetail.al?.name}
+            </Link>
+          </p>
+          <div className="m-info clear">
+            <div id="content-operation" className="btns">
+              <a className="play" title="播放" onClick={async () => {
+                const res = await (await getMusicDetail({ id: +songId })).data;
+                this.props.MusicList.checkRepetition(res.songs[0]);
+              }}>
+                <i><em className="ply"></em>播放</i>
+              </a>
+              <a className="add" title="添加到播放列表" onClick={async () => {
+                const res = await (await getMusicDetail({ id: +songId })).data;
+                this.props.MusicList.addList(res.songs[0]);
+              }}></a>
+            </div>
+          </div>
+          <div id="lyric-content" className="lyrics">
+            {lyrics.slice(0, 8).map(item => {
+              if (item === '') return;
+              return <><span>{item}</span> <br /></>;
+            })}
+            <div id="flag_more" className={`${showLyrics ? '' : 'f-hide'}`}>
+              {lyrics.slice(8).map(item => {
+                if (item === '') return;
+                return <><span>{item}</span> <br /></>;
+              })}
+            </div>
+            <div className="crl" onClick={() => {
+              this.setState({
+                showLyrics: !showLyrics,
+              })
+            }}>
+              <a className="open">
+                {showLyrics ? '收起' : '展开'}
+                <i className={`icn ${showLyrics ? 'icn-open' : ''}`}></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -128,7 +195,7 @@ class SongDetail extends React.Component<IProps, IState> {
         <div className="my-comment clear">
           <div className="input-wrap">
             <div className="head">
-              <img src="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=50y50" />
+              <img src={`${this.props.MusicList.userInfo?.avatarUrl}?param=50y50`} />
             </div>
             <div>
               <div className="inp">
@@ -207,7 +274,7 @@ class SongDetail extends React.Component<IProps, IState> {
                 }, () => {
                   this.getCommentList();
                   window.scrollTo({
-                    top: 800,
+                    top: 0,
                   });
                 })
               }}

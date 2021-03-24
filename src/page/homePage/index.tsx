@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import MyHeader from '@components/Header';
 import MyPlayBar from '@components/Playbar';
-import { Switch, Route, Redirect, RouteComponentProps, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, Redirect, RouteComponentProps } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 import MusicList from '@store/musicList';
 import { RouteConfigProps, routes } from '../../routes';

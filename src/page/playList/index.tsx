@@ -37,6 +37,9 @@ class PlayList extends React.Component<IProps, IState> {
 
 
   componentDidMount = async () => {
+    window.scrollTo({
+      top: 0,
+    });
     let playListId = qs.parse(this.props.location.search.replace(/^\?/, '')).id
     const res = await (await getPlayList({ id: +playListId })).data;
     const comment = await (await getCommentList({ id: +playListId })).data;
@@ -160,6 +163,13 @@ class PlayList extends React.Component<IProps, IState> {
     </Comment>
   }
 
+  getElementToPageTop: any = (el: any) => {
+    if (el.parentElement) {
+      return this.getElementToPageTop(el.parentElement) + el.offsetTop
+    }
+    return el.offsetTop
+  }
+
   render() {
     const { playListDetail, commentList, pageNo, myComment, playListId } = this.state;
     const { playing } = this.props.MusicList;
@@ -250,7 +260,7 @@ class PlayList extends React.Component<IProps, IState> {
           </span>
         </div>
         <div className="my-comment clear">
-          <div className="input-wrap">
+          <div id="music-comment" className="input-wrap">
             <div className="head">
               <img src="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=50y50" />
             </div>
