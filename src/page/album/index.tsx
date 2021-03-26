@@ -1,56 +1,58 @@
 import React from 'react';
+import { commentLike, getAlbumDetail, getMusicDetail, getAlbumCommentList, sendComment } from '@services/index';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import qs from 'querystring';
 import { Table, Input, Comment, List, Pagination, message } from 'antd';
-import { getPlayList, getMusicDetail, getCommentList, sendComment, commentLike } from '@services/index';
+import qs from 'querystring';
 import moment from 'moment';
+import './index.less'
 import { checkLogin } from '@utils/checkers';
-import './index.less';
+
 
 const { TextArea } = Input;
-
-interface IState {
-  playListId: string | string[],
-  playListDetail: any,
-  commentList: any,
-  pageNo: number,
-  myComment: string,
-}
 
 interface IProps extends RouteComponentProps {
   MusicList: any;
 }
 
+interface IState {
+  albumId: string;
+  albumSongsDetail: any;
+  albumDetail: any;
+  showDesc: boolean;
+  pageNo: number;
+  myComment: string;
+  commentList: any;
+}
+
 @inject('MusicList')
 @observer
-class PlayList extends React.Component<IProps, IState> {
+class Album extends React.Component<IProps> {
   state: IState = {
-    playListId: '0',
-    playListDetail: {},
-    commentList: {},
+    albumId: '',
+    albumSongsDetail: [],
+    albumDetail: [],
+    showDesc: false,
     pageNo: 0,
     myComment: '',
+    commentList: {}
   }
 
-
   componentDidMount = async () => {
-    window.scrollTo({
-      top: 0,
-    });
-    let playListId = qs.parse(this.props.location.search.replace(/^\?/, '')).id
-    const res = await (await getPlayList({ id: +playListId })).data;
-    const comment = await (await getCommentList({ id: +playListId })).data;
+    let albumId = qs.parse(this.props.location.search.replace(/^\?/, '')).id;
+    const res = await (await getAlbumDetail({ id: +albumId })).data;
+    const comment = await (await getAlbumCommentList({ id: +albumId })).data;
     this.setState({
-      playListId,
-      playListDetail: res.playlist,
+      albumId,
+      albumSongsDetail: res.songs,
+      albumDetail: res.album,
       commentList: comment,
     });
   }
 
   getCommentList = async () => {
-    const { playListId, pageNo } = this.state;
-    const comment = await (await getCommentList({ id: +playListId, pageNo: pageNo })).data;
+    const { albumId, pageNo } = this.state;
+    const comment = await (await getAlbumCommentList({ id: +albumId, pageNo: pageNo })).data;
     this.setState({
       commentList: comment,
     });
@@ -64,6 +66,7 @@ class PlayList extends React.Component<IProps, IState> {
       </span>
     })
   }
+
 
   renderColumns = () => {
     return [
@@ -139,8 +142,8 @@ class PlayList extends React.Component<IProps, IState> {
               let t = item.liked ? 0 : 1;
               const res = await (await commentLike({
                 t,
-                type: 2,
-                id: +this.state.playListId,
+                type: 3,
+                id: +this.state.albumId,
                 cid: item.commentId,
               })).data;
               if (res.code === 200) {
@@ -159,20 +162,15 @@ class PlayList extends React.Component<IProps, IState> {
     </Comment>
   }
 
-  getElementToPageTop: any = (el: any) => {
-    if (el.parentElement) {
-      return this.getElementToPageTop(el.parentElement) + el.offsetTop
-    }
-    return el.offsetTop
-  }
-
   render() {
-    const { playListDetail, commentList, pageNo, myComment, playListId } = this.state;
-    const { playing } = this.props.MusicList;
-    return <div className="play-list-detail">
+    const { albumDetail, albumSongsDetail, showDesc, myComment, albumId, commentList, pageNo } = this.state;
+    const desc = albumDetail.description?.split('\n').filter((item: string) => {
+      if (item) return item;
+    });
+    return <div className="album-page">
       <div className="music-info clear">
         <div className="cover">
-          <img src={`${playListDetail?.coverImgUrl}?param=200y200`} className="j-img" />
+          <img src={`${albumDetail?.blurPicUrl}?param=177y177`} className="j-img" />
           <span className="msk"></span>
         </div>
         <div className="info">
@@ -180,42 +178,67 @@ class PlayList extends React.Component<IProps, IState> {
             <div className="hd clear">
               <i className="icn"></i>
               <div className="tit">
-                <h2 >{playListDetail?.name}</h2>
+                <h2 >{albumDetail?.name}</h2>
               </div>
             </div>
-            <div className="user clear">
-              <span className="face">
-                <img src={`${playListDetail?.creator?.avatarUrl}?param=40y40`} />
+            <div className="intr clear">
+              <b>歌手：</b>
+              <span>
+                {albumDetail.artists?.map((item: any, index: number) => {
+                  return <>
+                    <Link to={`/artist?id=${item.id}`}>{item.name}</Link>
+                    {albumDetail.artists.length - 1 !== index ? ' / ' : ''}
+                  </>
+                })}
               </span>
-              <span className="name">
-                <a href={`/user/home?id=${playListDetail?.creator?.userId}`}>{playListDetail?.creator?.nickname}</a>
-              </span>
-              <span className="time s-fc4">{moment(playListDetail?.createTime).format('YYYY-MM-DD')}&nbsp;创建</span>
             </div>
+            <p className="intr">
+              <b>发行时间：</b>{moment(albumDetail.publishTime).format('YYYY-MM-DD')}
+            </p>
+            <p className="intr">
+              <b>发行公司：</b>智慧大狗
+            </p>
             <div className="action clear">
               <a className="play" title="播放" onClick={() => {
-                this.props.MusicList.changePlayList(playListDetail.tracks);
+                this.props.MusicList.changePlayList(albumDetail.tracks);
               }}>
                 <i>
                   <em className="ply"></em>播放
                   </i>
               </a>
               <a className="add" title="添加到播放列表" onClick={() => {
-                this.props.MusicList.addPlayList(playListDetail.tracks);
+                this.props.MusicList.addPlayList(albumDetail.tracks);
               }}></a>
             </div>
-            <div className="tags clear">
-              <b>标签：</b>
-              {playListDetail.tags?.map((item: string, index: number) => {
-                return <a key={index} className="u-tag">
-                  <i>{item}</i>
-                </a>
+          </div>
+          <div className="description">
+            <h3>专辑介绍：</h3>
+            <div className="brk">
+              {desc?.splice(0, 4).map((item: string) => {
+                if (item) {
+                  return <p>{item}</p>;
+                }
               })}
             </div>
-            <p className="intr clear">
-              <b>介绍：</b>
-              {playListDetail?.description}
-            </p>
+            <div className="brk" style={{
+              display: `${showDesc ? 'block' : 'none'}`
+            }}>
+              {desc?.splice(4).map((item: string) => {
+                if (item) {
+                  return <p>{item}</p>;
+                }
+              })}
+            </div>
+            {desc?.length > 4 ? <div className="crl" onClick={() => {
+              this.setState({
+                showDesc: !showDesc,
+              })
+            }}>
+              <a className="open">
+                {showDesc ? '收起' : '展开'}
+                <i className={`icn ${showDesc ? 'icn-open' : ''}`}></i>
+              </a>
+            </div> : null}
           </div>
         </div>
       </div>
@@ -225,17 +248,14 @@ class PlayList extends React.Component<IProps, IState> {
             <span className="list">歌曲列表</span>
           </h3>
           <span className="sub">
-            <span>{playListDetail.trackCount}</span>首歌
+            <span>{albumSongsDetail?.length}</span>首歌
           </span>
-          <div className="more">播放：
-            <strong id="play-count">{playListDetail?.playCount}</strong>次
-          </div>
         </div>
         <div className="table-wrap">
           <Table
             className="my-table"
             columns={this.renderColumns()}
-            dataSource={playListDetail.tracks}
+            dataSource={albumSongsDetail}
             rowClassName={(record, index) => {
               let className = 'light-row';
               if (index % 2 === 1) className = 'dark-row';
@@ -252,7 +272,7 @@ class PlayList extends React.Component<IProps, IState> {
             <span className="comment">评论</span>
           </h3>
           <span className="sub">
-            共<span>{playListDetail.trackCount}</span>条评论
+            共<span>{commentList.total}</span>条评论
           </span>
         </div>
         <div className="my-comment clear">
@@ -276,8 +296,8 @@ class PlayList extends React.Component<IProps, IState> {
                     if (!content) return message.warning('请填写内容！');
                     const res = await (await sendComment({
                       t: 1,
-                      type: 2,
-                      id: +playListId,
+                      type: 3,
+                      id: +albumId,
                       content,
                     })).data;
                     if (res.code === 200) {
@@ -349,4 +369,4 @@ class PlayList extends React.Component<IProps, IState> {
   }
 }
 
-export default PlayList;
+export default Album;

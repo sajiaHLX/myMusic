@@ -12,6 +12,14 @@ interface IProps extends RouteComponentProps { }
 
 const { Content } = Layout;
 class App extends React.Component<IProps> {
+  appRef: HTMLDivElement | null = null;
+
+  componentDidUpdate = () => {
+    if (this.appRef) {
+      console.log('asdad');
+      this.appRef.scrollTop = 0;
+    }
+  }
 
   getRecursiveRoute = (routeConfigs: RouteConfigProps[], parentRoute: string = ''): any =>
     routeConfigs.map(config => {
@@ -33,7 +41,7 @@ class App extends React.Component<IProps> {
   render() {
     return (
       <Provider MusicList={MusicList}>
-        <div className="App">
+        <div className="App" ref={ref => this.appRef = ref}>
           <Layout>
             <MyHeader></MyHeader>
             <Content>

@@ -8,6 +8,8 @@ import PlayList from '@page/playList';
 import Recommend from '@page/recommend';
 import SongDetail from '@page/songDetail';
 import SearchPage from '@page/searchPage';
+import AlbumPage from '@page/album';
+import Artist from '@page/artistPage';
 
 export interface RouteConfigProps extends RouteProps {
   route: string;
@@ -43,5 +45,13 @@ export const routes = [
   {
     route: '/search',
     component: SearchPage,
-  }
+  },
+  {
+    route: '/album',
+    component: AlbumPage,
+  },
+  {
+    route: '/artist',
+    component: Artist,
+  },
 ];

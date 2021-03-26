@@ -118,7 +118,7 @@ class Header extends React.Component<IProps> {
             <Link className="create-c" to="">创作者中心</Link>
             <div className="search">
               <Input className="ser-i" prefix={<SearchOutlined />} placeholder="音乐/视频/用户/电台" onPressEnter={(e: any) => {
-                this.props.history.push(`/search?s=${e.target.value}&type=1`)
+                this.props.history.push(`/search?s=${e.target.value}&type=1`);
               }} />
             </div>
           </div>

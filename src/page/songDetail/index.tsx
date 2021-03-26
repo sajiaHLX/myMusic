@@ -45,7 +45,7 @@ class SongDetail extends React.Component<IProps, IState> {
     const songDetail = await (await getMusicDetail({ id: +songId })).data;
     const commentList = await (await getSongCommentList({ id: +songId })).data;
     const lyrics = await (await getSongLyric({ id: +songId })).data;
-    let lyricsList = lyrics.lrc.lyric.split('\n').map((item: string) => {
+    let lyricsList = lyrics.lrc?.lyric.split('\n').map((item: string) => {
       return item.split(']')[1];
     });
     this.setState({
@@ -160,17 +160,17 @@ class SongDetail extends React.Component<IProps, IState> {
             </div>
           </div>
           <div id="lyric-content" className="lyrics">
-            {lyrics.slice(0, 8).map(item => {
+            {lyrics?.slice(0, 8).map((item, index: number) => {
               if (item === '') return;
-              return <><span>{item}</span> <br /></>;
+              return <span key={index}><span>{item}</span> <br /></span>;
             })}
             <div id="flag_more" className={`${showLyrics ? '' : 'f-hide'}`}>
-              {lyrics.slice(8).map(item => {
+              {lyrics?.slice(8).map((item, index: number) => {
                 if (item === '') return;
-                return <><span>{item}</span> <br /></>;
+                return <span key={index}><span>{item}</span> <br /></span>;
               })}
             </div>
-            <div className="crl" onClick={() => {
+            {lyrics?.length > 8 ? <div className="crl" onClick={() => {
               this.setState({
                 showLyrics: !showLyrics,
               })
@@ -179,7 +179,7 @@ class SongDetail extends React.Component<IProps, IState> {
                 {showLyrics ? '收起' : '展开'}
                 <i className={`icn ${showLyrics ? 'icn-open' : ''}`}></i>
               </a>
-            </div>
+            </div> : null}
           </div>
         </div>
       </div>

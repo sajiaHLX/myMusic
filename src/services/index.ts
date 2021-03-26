@@ -18,9 +18,26 @@ export const checkMusic = (params: { id: number }) => axios.get(`/check/music?id
 
 export const getMusicDetail = (params: { id: number }) => axios.get(`/song/detail?ids=${params.id}`);
 
-export const getCommentList = (params: { id: number, pageNo?: number }) => axios.get(`/comment/playlist?id=${params.id}&offset=${params?.pageNo || ''}&timestamp=${Date.now()}`);
+export const getCommentList = (params: { id: number, pageNo?: number }) => axios.get(`/comment/playlist?timestamp=${Date.now()}`, {
+  params: {
+    ...params,
+    offset: params.pageNo ? params.pageNo * 30 : '',
+  }
+});
 
-export const getSongCommentList = (params: { id: number, pageNo?: number }) => axios.get(`/comment/music?id=${params.id}&offset=${params?.pageNo || ''}&timestamp=${Date.now()}`);
+export const getSongCommentList = (params: { id: number, pageNo?: number }) => axios.get(`/comment/music?timestamp=${Date.now()}`, {
+  params: {
+    ...params,
+    offset: params.pageNo ? params.pageNo * 30 : '',
+  }
+});
+
+export const getAlbumCommentList = (params: { id: number, pageNo?: number }) => axios.get(`/comment/album?timestamp=${Date.now()}`, {
+  params: {
+    ...params,
+    offset: params.pageNo ? params.pageNo * 30 : '',
+  }
+});
 
 export const getRecommendSongs = () => axios.get('/recommend/songs');
 
@@ -45,4 +62,33 @@ export const search = (params: {
   keywords: string,
   offset: number,
   type: number,           //搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
-}) => axios.post('/cloudsearch', params)
+}) => axios.get(`/cloudsearch?timestamp=${Date.now()}`, {
+  params: {
+    ...params,
+    offset: params.offset * 30,
+  }
+});
+
+export const getAlbumDetail = (params: { id: number }) => axios.get(`/album?id=${params.id}`);
+
+export const getArtistDetail = (params: { id: number }) => axios.get(`/artists?id=${params.id}`);
+
+export const getArtistAlbumDetail = (params: { id: number, offset: number }) => axios.get(`/artist/album`, {
+  params: {
+    ...params,
+    offset: params.offset * 12,
+    limit: 12,
+  }
+});
+
+export const getArtistDescDetail = (params: { id: number }) => axios.get(`/artist/desc`, {
+  params: {
+    ...params,
+  }
+});
+
+
+
+
+
+
