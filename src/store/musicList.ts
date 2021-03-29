@@ -16,8 +16,6 @@ export interface Playing {
 }
 
 class MusicList {
-  @observable userInfo: any = JSON.parse(window.localStorage.getItem('profile') || '');
-
   @observable onChange: boolean = false;
 
   @observable musicList: any[] = [];
@@ -95,9 +93,7 @@ class MusicList {
         this.musicList.push(item1); //不重复的放入新数组。  新数组的内容会继续进行上边的循环。
       }
     }
-    // this.musicList
   }
-
 }
 
 const musicList = new MusicList();

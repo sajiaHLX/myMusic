@@ -4,6 +4,7 @@ import { inject, observer } from 'mobx-react';
 import { Slider, message } from 'antd';
 import { MessageType } from 'antd/lib/message';
 import { Link } from 'react-router-dom';
+import addCollectionModal from '@components/AddCollection';
 import './index.less'
 
 const PlayType = [
@@ -275,7 +276,11 @@ class MyPlayBar extends React.Component<IAppProps> {
               </div>
             </div>
             <div className="oper">
-              <a className="icn-add" title="收藏">收藏</a>
+              <a className="icn-add" title="收藏" onClick={() => {
+                if (this.state.playing.id) {
+                  addCollectionModal(this.state.playing.id);
+                }
+              }}>收藏</a>
             </div>
             <div className="ctrl">
               <div className="m-vol" style={{ visibility: showVoice }}>
@@ -332,7 +337,7 @@ class MyPlayBar extends React.Component<IAppProps> {
                     }}>{item?.name}</div>
                     <div className="col col-3">
                       <div className="icns">
-                        <i className="ico icn-del" title="删除" onClick={()=>{
+                        <i className="ico icn-del" title="删除" onClick={() => {
                           this.props.MusicList.delMusicList(item);
                         }}>删除</i>
                       </div>

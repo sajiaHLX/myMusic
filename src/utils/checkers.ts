@@ -6,9 +6,19 @@ export function phone(val?: string) {
 
 export function checkLogin() {
   let token = window.localStorage.getItem('token');
-  if(token){
+  if (token) {
     return true;
-  }else {
+  } else {
     return false;
   }
+}
+
+export function getProfile() {
+  let p = window.localStorage.getItem('profile');
+  if (p) {
+    return JSON.parse(p);
+  }
+  return {
+    avatarUrl: 'http://s4.music.126.net/style/web2/img/default/default_avatar.jpg',
+  };
 }

@@ -53,10 +53,12 @@ export default class PageBody extends React.Component<IProps> {
               }}
               key={String(item.targetId + index)}
               onClick={() => {
-                if (item.targetId !== 0) {
-                  this.props.history.push(`/song?id=${item.targetId}`);
+                if (item.targetType === 1) {
+                  if (item.targetId !== 0) {
+                    this.props.history.push(`/song?id=${item.targetId}`);
+                  }
                 } else {
-                  message.warning('该歌曲、专辑需要购买！')
+                  message.warning('该歌曲、专辑、视频需要购买！');
                 }
               }}
             >

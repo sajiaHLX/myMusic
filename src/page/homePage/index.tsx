@@ -16,7 +16,6 @@ class App extends React.Component<IProps> {
 
   componentDidUpdate = () => {
     if (this.appRef) {
-      console.log('asdad');
       this.appRef.scrollTop = 0;
     }
   }

@@ -10,6 +10,7 @@ import SongDetail from '@page/songDetail';
 import SearchPage from '@page/searchPage';
 import AlbumPage from '@page/album';
 import Artist from '@page/artistPage';
+import UserHome from '@page/user/home';
 
 export interface RouteConfigProps extends RouteProps {
   route: string;
@@ -54,4 +55,12 @@ export const routes = [
     route: '/artist',
     component: Artist,
   },
+  {
+    route: '/user/home',
+    component: UserHome,
+  },
+  {
+    route: '/myMusic',
+    component: MyMusic,
+  }
 ];

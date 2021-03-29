@@ -204,7 +204,14 @@ class Artist extends React.Component<IProps>{
       </div>
     } else if (type === '3') {
       return <div className="desc-wrap">
-
+        <h2><i>&nbsp;</i>{artist.name}简介</h2>
+        <p>{desc.briefDesc}</p>
+        {desc.introduction?.map((item: any) => {
+          return <>
+            <h2>{item.ti}</h2>
+            <p>{item.txt}</p>
+          </>
+        })}
       </div>
     }
   }

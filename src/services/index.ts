@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const PhoneLogin = (params: { phone: string, password: string }) => axios.post('/login/cellphone', params);
+export const PhoneLogin = (params: { phone: string, password: string }) => axios.post(`/login/cellphone?timestamp=${Date.now()}`, params);
 
 export const getHomePageBanner = () => axios.get('/banner?type=0');
 
@@ -86,6 +86,69 @@ export const getArtistDescDetail = (params: { id: number }) => axios.get(`/artis
     ...params,
   }
 });
+
+export const getUserInfoCount = () => axios.get('/user/subcount');
+
+export const getUserInfo = () => axios.get('/user/account');
+
+export const getUserFollow = (params: { uid: number, offset: number }) => axios.get('/artist/sublist', {
+  params: {
+    ...params,
+    offset: params.offset * 100,
+    limit: 100,
+  }
+});
+
+export const getUserPlayList = (params: { uid: number, offset: number }) => axios.get(`/user/playlist?timestamp=${Date.now()}`, {
+  params: {
+    ...params,
+    offset: params.offset * 100,
+    limit: 100,
+  }
+});
+
+
+export const createPlayList = (name: string) => axios.get('/playlist/create', {
+  params: {
+    name,
+  }
+});
+
+export const deletePlayList = (id: number) => axios.get('/playlist/delete', {
+  params: {
+    id,
+  }
+});
+
+export const updatePlayList = (id: string, name: string) => axios.get('/playlist/name/update', {
+  params: {
+    id,
+    name,
+  }
+});
+
+export const getUserSinger = () => axios.get('/artist/sublist');
+
+export const addSingsToUserList = (params: {
+  op: 'add' | 'del',
+  pid: string, //歌单id，
+  tracks: string, //歌曲id
+}) => axios.get('/playlist/tracks', {
+  params: {
+    ...params,
+  }
+});
+
+
+export const addPlayListToUserList = (params: {
+  t: 1 | 2,//1:收藏,2:取消收藏
+  id: string, //歌单id，
+}) => axios.get('/playlist/subscribe', {
+  params: {
+    ...params,
+  }
+});
+
 
 
 

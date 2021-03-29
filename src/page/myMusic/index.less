@@ -1,0 +1,260 @@
+.my-music {
+  width: 980px;
+  margin: 0 auto;
+  border: 1px solid #d3d3d3;
+  border-width: 0 1px;
+  min-height: 623px;
+  height: calc(100vh - 210px);
+  display: flex;
+
+  .menu-wrap {
+    width: 240px;
+    height: 100%;
+    padding-top: 40px;
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #f9f9f9;
+    border-right: 1px solid #d3d3d3;
+
+    .my-menu {
+      .title {
+        position: relative;
+
+        .u-btn {
+          font-size: 14px;
+          text-decoration: none;
+          color: #333;
+          cursor: pointer;
+          outline: none;
+          background: url(../../assets/button.png) no-repeat 0 9999px;
+          display: block;
+          width: 52px;
+          height: 22px;
+          background-position: 0 -96px;
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+
+          i {
+            font-style: normal;
+            text-align: left;
+            cursor: pointer;
+            display: block;
+            line-height: 22px;
+            overflow: hidden;
+            padding-left: 20px;
+            color: #515151;
+            font-size: 12px;
+            font-weight: normal;
+          }
+        }
+      }
+
+      .ant-menu-item {
+        margin: 0;
+        list-style: none;
+        cursor: pointer;
+        vertical-align: middle;
+        position: relative;
+        zoom: 1;
+        height: 54px;
+        padding: 6px 0 6px 20px !important;
+      }
+
+      .item {
+        list-style: none;
+        cursor: pointer;
+        vertical-align: middle;
+        padding-left: 50px;
+        height: 42px;
+
+        .left {
+          list-style: none;
+          cursor: pointer;
+          vertical-align: middle;
+          display: inline;
+          float: left;
+          margin-left: -50px;
+          overflow: hidden;
+          width: 40px;
+
+          .avatar {
+            list-style: none;
+            text-decoration: none;
+            color: #333;
+            outline: none;
+            cursor: pointer;
+            display: block;
+            position: relative;
+            width: 40px;
+            height: 40px;
+
+            img {
+              list-style: none;
+              color: #333;
+              border: 0;
+              cursor: pointer;
+              vertical-align: middle;
+              width: 40px;
+              height: 40px;
+            }
+          }
+        }
+
+        .name {
+          word-break: break-word;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+          cursor: pointer;
+          vertical-align: middle;
+          width: 150px;
+          overflow: hidden;
+          margin-top: 2px;
+          margin-bottom: 8px;
+          line-height: 17px;
+          font-size: 12px;
+
+          .nm {
+            list-style: none;
+            word-wrap: normal;
+            text-decoration: none;
+            outline: none;
+            color: #000;
+            cursor: pointer;
+            vertical-align: middle;
+            white-space: nowrap;
+          }
+        }
+
+        .num {
+          font-size: 12px;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+          color: #999;
+          cursor: pointer;
+          vertical-align: middle;
+          width: 130px;
+          line-height: 17px;
+        }
+      }
+
+      .oper {
+        display: none;
+
+        a::before {
+          display: none;
+        }
+
+        list-style: none;
+        cursor: pointer;
+        vertical-align: middle;
+        position: absolute;
+        bottom: 7px;
+        right: 0;
+
+        .edit {
+          list-style: none;
+          text-decoration: none;
+          color: #333;
+          outline: none;
+          background: url(../../assets/icon.png) no-repeat 0 9999px;
+          display: block;
+          overflow: hidden;
+          width: 13px;
+          height: 13px;
+          background-position: 0 -270px;
+          cursor: pointer;
+          float: left;
+          margin-right: 10px;
+        }
+
+        .edit:hover {
+          background-position: -20px -270px;
+        }
+
+        .delt {
+          list-style: none;
+          text-decoration: none;
+          color: #333;
+          outline: none;
+          background: url(../../assets/icon.png) no-repeat 0 9999px;
+          display: block;
+          overflow: hidden;
+          width: 13px;
+          height: 14px;
+          background-position: 0 -284px;
+          cursor: pointer;
+          float: left;
+          margin-right: 10px;
+        }
+
+        .delt:hover {
+          background-position: -20px -284px;
+        }
+      }
+
+      .ant-menu-item:hover {
+        .oper {
+          display: block;
+        }
+      }
+    }
+
+    .ant-menu {
+      background-color: #f9f9f9;
+
+      .ant-menu-item {
+        font-weight: 500;
+      }
+
+      .ant-menu-submenu-title {
+        font-weight: 500;
+      }
+
+      .ant-menu-item-selected {
+        background-color: #eee;
+        color: #000;
+      }
+
+      .ant-menu-item-active {
+        background-color: #f4f2f2;
+        color: #000;
+      }
+
+      .ant-menu-submenu-active {
+        .ant-menu-submenu-title {
+          color: #000;
+        }
+      }
+
+      .ant-menu-submenu-selected {
+        .ant-menu-submenu-title {
+          color: #000;
+        }
+      }
+
+      .ant-menu-item-selected::after {
+        display: none;
+      }
+    }
+  }
+
+  .content-wrap {
+    position: relative;
+    zoom: 1;
+    height: 100%;
+    width: 740px;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+}

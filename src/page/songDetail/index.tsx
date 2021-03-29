@@ -5,7 +5,7 @@ import qs from 'querystring';
 import { Input, Comment, List, Pagination, message } from 'antd';
 import { sendComment, commentLike, getSongCommentList, getMusicDetail, getSongLyric } from '@services/index';
 import moment from 'moment';
-import { checkLogin } from '@utils/checkers';
+import { checkLogin, getProfile } from '@utils/checkers';
 import './index.less';
 
 const { TextArea } = Input;
@@ -120,7 +120,7 @@ class SongDetail extends React.Component<IProps, IState> {
       <div className="song-info clear">
         <div className="cvr-wrap">
           <div className="u-cover">
-            <img src={`${songDetail.al?.picUrl}?param=130y130`} className="j-img" />
+            <img src={`${songDetail?.al?.picUrl}?param=130y130`} className="j-img" />
             <span className="msk"></span>
           </div>
         </div>
@@ -128,21 +128,21 @@ class SongDetail extends React.Component<IProps, IState> {
           <div className="hd">
             <i className="lab"></i>
             <div className="tit">
-              <em className="f-tit">{songDetail.name}</em>
+              <em className="f-tit">{songDetail?.name}</em>
               <a title="播放mv" href="/mv?id=10946911">
                 <i className="icn u-icn u-icn-2"></i>
               </a>
-              <div className="subtit">{songDetail.alia ? songDetail.alia[0] : ''}</div>
+              <div className="subtit">{songDetail?.alia ? songDetail.alia[0] : ''}</div>
             </div>
           </div>
           <p className="des">歌手：
             <span title="Michele Morrone">
-              {this.renderArt(songDetail.ar || [])}
+              {this.renderArt(songDetail?.ar || [])}
             </span>
           </p>
           <p className="des">所属专辑：
-            <Link to={`/album?id=${songDetail.al?.id}`} className="link">
-              {songDetail.al?.name}
+            <Link to={`/album?id=${songDetail?.al?.id}`} className="link">
+              {songDetail?.al?.name}
             </Link>
           </p>
           <div className="m-info clear">
@@ -189,13 +189,13 @@ class SongDetail extends React.Component<IProps, IState> {
             <span className="comment">评论</span>
           </h3>
           <span className="sub">
-            共<span>{songDetail.trackCount}</span>条评论
+            共<span>{songDetail?.trackCount}</span>条评论
           </span>
         </div>
         <div className="my-comment clear">
           <div className="input-wrap">
             <div className="head">
-              <img src={`${this.props.MusicList.userInfo?.avatarUrl}?param=50y50`} />
+              <img src={`${getProfile()?.avatarUrl}?param=50y50`} />
             </div>
             <div>
               <div className="inp">

@@ -5,7 +5,7 @@ import qs from 'querystring';
 import { Table, Input, Comment, List, Pagination, message } from 'antd';
 import { getPlayList, getMusicDetail, getCommentList, sendComment, commentLike } from '@services/index';
 import moment from 'moment';
-import { checkLogin } from '@utils/checkers';
+import { checkLogin, getProfile } from '@utils/checkers';
 import './index.less';
 
 const { TextArea } = Input;
@@ -258,7 +258,7 @@ class PlayList extends React.Component<IProps, IState> {
         <div className="my-comment clear">
           <div id="music-comment" className="input-wrap">
             <div className="head">
-              <img src="http://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=50y50" />
+              <img src={`${getProfile()?.avatarUrl}?param=50y50`} />
             </div>
             <div>
               <div className="inp">

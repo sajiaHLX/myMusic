@@ -73,7 +73,7 @@ class SearchPage extends React.Component<IProps> {
         type: query.type as string,
         pageNo: 0,
       });
-    })
+    });
   }
 
   startSearch = async (query: Query) => {

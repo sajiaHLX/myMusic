@@ -6,6 +6,7 @@ import { Form, Input, message } from 'antd';
 import { phone } from '@utils/checkers';
 import { FormInstance } from 'antd/lib/form';
 import { PhoneLogin } from '@services/index';
+import MusicList from '@store/musicList';
 import './index.less'
 
 enum LoginType {

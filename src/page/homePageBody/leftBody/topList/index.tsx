@@ -2,9 +2,11 @@ import * as React from 'react';
 import { getPlayList } from '@services/index';
 import { observer } from 'mobx-react';
 import MusicList from '@store/musicList';
-import { getMusicDetail } from '@services/index';
+import { getMusicDetail, addPlayListToUserList } from '@services/index';
 import { Link } from 'react-router-dom';
+import addCollectionModal from '@components/AddCollection';
 import './index.less'
+import { message } from 'antd';
 
 interface Item {
   id: number,
@@ -40,8 +42,20 @@ export default class TopList extends React.Component {
         const res = await (await getMusicDetail({ id: item.id })).data;
         MusicList.addList(res.songs[0]);
       }}></a>
-      <a className="record" title="收藏"></a>
+      <a className="record" title="收藏" onClick={() => {
+        addCollectionModal(item.id);
+      }}></a>
     </div>
+  }
+
+  addPlayList = async (id: string) => {
+    const res = await (await addPlayListToUserList({ t: 1, id: id })).data;
+    if (res.code === 200) {
+      message.success("添加成功！");
+      return;
+    } else {
+      message.error('添加失败！');
+    }
   }
 
   render() {
@@ -68,7 +82,9 @@ export default class TopList extends React.Component {
                 <a className="play" onClick={() => {
                   MusicList.changePlayList(this.state.showFastUpList);
                 }}>播放</a>
-                <a className="subscribe-flag">收藏</a>
+                <a className="subscribe-flag" onClick={() => {
+                  this.addPlayList('19723756');
+                }}>收藏</a>
               </div>
             </div>
           </dt>
@@ -98,7 +114,9 @@ export default class TopList extends React.Component {
                 <a className="play" onClick={() => {
                   MusicList.changePlayList(this.state.showNewList);
                 }}>播放</a>
-                <a className="subscribe-flag">收藏</a>
+                <a className="subscribe-flag" onClick={() => {
+                  this.addPlayList('3779629');
+                }}>收藏</a>
               </div>
             </div>
           </dt>
@@ -128,7 +146,9 @@ export default class TopList extends React.Component {
                 <a className="play" onClick={() => {
                   MusicList.changePlayList(this.state.showOriginalList);
                 }}>播放</a>
-                <a className="subscribe-flag">收藏</a>
+                <a className="subscribe-flag" onClick={() => {
+                  this.addPlayList('2884035');
+                }}>收藏</a>
               </div>
             </div>
           </dt>
