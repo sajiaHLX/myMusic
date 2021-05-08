@@ -32,19 +32,19 @@ export default class TopRecommendations extends React.Component {
       <div className="v-hd2">
         <Link to="/discover/playlist/" className="tit f-ff2 f-tdn">热门推荐</Link>
         <div className="tab">
-          <Link to="/discover/playlist/?cat=%E5%8D%8E%E8%AF%AD" className="s-fc3">华语</Link>
+          <Link to="/discover/playlist/?cat=华语" className="s-fc3">华语</Link>
           <span className="line">|</span>
-          <Link to="/discover/playlist/?cat=%E6%B5%81%E8%A1%8C" className="s-fc3">流行</Link>
+          <Link to="/discover/playlist/?cat=流行" className="s-fc3">流行</Link>
           <span className="line">|</span>
-          <Link to="/discover/playlist/?cat=%E6%91%87%E6%BB%9A" className="s-fc3">摇滚</Link>
+          <Link to="/discover/playlist/?cat=摇滚" className="s-fc3">摇滚</Link>
           <span className="line">|</span>
-          <Link to="/discover/playlist/?cat=%E6%B0%91%E8%B0%A3" className="s-fc3">民谣</Link>
+          <Link to="/discover/playlist/?cat=民谣" className="s-fc3">民谣</Link>
           <span className="line">|</span>
-          <Link to="/discover/playlist/?cat=%E7%94%B5%E5%AD%90" className="s-fc3">电子</Link>
+          <Link to="/discover/playlist/?cat=电子" className="s-fc3">电子</Link>
         </div>
         <span className="more">
           <Link to="/discover/playlist/" className="s-fc3">更多</Link>
-          <i className="cor s-bg s-bg-6">&nbsp;</i>
+          <i className="cor">&nbsp;</i>
         </span>
       </div>
       <div className="top-content">

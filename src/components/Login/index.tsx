@@ -2,7 +2,7 @@ import React from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import { render } from 'react-dom';
 import AllToast from '@components/Toast';
-import { Form, Input, message } from 'antd';
+import { Checkbox, Form, Input, message } from 'antd';
 import { phone } from '@utils/checkers';
 import { FormInstance } from 'antd/lib/form';
 import { PhoneLogin } from '@services/index';
@@ -41,6 +41,7 @@ class LoginModal extends React.Component {
     }
     this.setState({
       loginType: type,
+      check: false,
     })
   }
 
@@ -105,7 +106,7 @@ class LoginModal extends React.Component {
           </div>
           <div className="l-bottom">
             <div className="u-official-terms">
-              <input type="checkbox" id="j-official-terms" onChange={() => {
+              <Checkbox defaultChecked={this.state.check} onChange={() => {
                 this.setState({
                   check: !this.state.check
                 })
@@ -194,8 +195,16 @@ class LoginModal extends React.Component {
           </Form>
         </div>
         <div className="bottom">
-          <a className="back">&lt;&nbsp;&nbsp;其他登录方式</a>
-          <a className="registered">没有帐号？免费注册&nbsp;&nbsp;&gt;</a>
+          <a className="back" onClick={() => {
+            this.setState({
+              loginType: LoginType.Index,
+            });
+          }}>&lt;&nbsp;&nbsp;其他登录方式</a>
+          <a className="registered" onClick={() => {
+            this.setState({
+              loginType: LoginType.Registered,
+            });
+          }}>没有帐号？免费注册&nbsp;&nbsp;&gt;</a>
         </div>
       </div>,
     },
@@ -220,6 +229,11 @@ class LoginModal extends React.Component {
           </div>
         </div>
         <div className="content">
+          <a onClick={()=>{
+            this.setState({
+              loginType: LoginType.Index
+            })
+          }}>敬请期待，暂未开发！点击跳回登录！</a>
         </div>
       </div>,
     }

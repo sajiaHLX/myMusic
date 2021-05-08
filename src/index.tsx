@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from '@page/homePage';
+import ScrollToTop from '@components/ScrollToTop';
 import './index.less';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Switch>
-        <Route component={HomePage} />
-      </Switch>
+      <ScrollToTop>
+        <Switch>
+          <Route component={HomePage} />
+        </Switch>
+      </ScrollToTop>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

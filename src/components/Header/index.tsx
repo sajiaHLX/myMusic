@@ -109,36 +109,6 @@ class Header extends React.Component<IProps, IState> {
                         </Link>
                       </li>
                       <li>
-                        <Link className="itm-1" to="/user/home?id=436340822">
-                          <i className="icn icn-msg"></i>
-                          <em>我的消息</em>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="itm-1" to="/user/home?id=436340822">
-                          <i className="icn icn-lv"></i>
-                          <em>我的等级</em>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="itm-1" to="/user/home?id=436340822">
-                          <i className="icn icn-mbr"></i>
-                          <em>VIP会员</em>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="itm-1" to="/user/home?id=436340822">
-                          <i className="icn icn-st"></i>
-                          <em>个人设置</em>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link className="itm-1" to="/user/home?id=436340822">
-                          <i className="icn icn-verify"></i>
-                          <em>实名认证</em>
-                        </Link>
-                      </li>
-                      <li>
                         <a className="itm-1">
                           <i className="icn icn-ex"></i>
                           <em onClick={() => {

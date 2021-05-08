@@ -131,6 +131,20 @@ class MyPlayBar extends React.Component<IAppProps> {
     return 0;
   }
 
+  playStop = () => {
+    const { stop } = this.state;
+    if (!stop) {
+      this.audioRef?.play();
+      this.getTime();
+    } else {
+      this.audioRef?.pause();
+      window.clearInterval(this.myInterval);
+    }
+    this.setState({
+      stop: !stop,
+    })
+  }
+
   playPrev = () => {
     const { musicList, playIndex } = this.props.MusicList;
     window.clearInterval(this.myInterval);
@@ -227,16 +241,7 @@ class MyPlayBar extends React.Component<IAppProps> {
                 this.playPrev();
               }}>上一首</a>
               <a className={`ply ${stop ? 'stop' : ''}`} title="播放/暂停(p)" onClick={() => {
-                if (!stop) {
-                  this.audioRef?.play();
-                  this.getTime();
-                } else {
-                  this.audioRef?.pause();
-                  window.clearInterval(this.myInterval);
-                }
-                this.setState({
-                  stop: !stop,
-                })
+                this.playStop();
               }}>播放/暂停</a>
               <a className="nxt" title="下一首(ctrl+→)" onClick={() => {
                 this.playNext();
