@@ -1,6 +1,5 @@
 import { RouteProps } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
-import Home from '@page/findMusic';
 import MyMusic from '@page/myMusic';
 import HomePage from '@page/homePage';
 import HomePageBody from '@page/homePageBody';
