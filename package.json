@@ -104,7 +104,6 @@
   },
   "scripts": {
     "server2": "node ./NeteaseCloudMusicApi-master/app.js",
-    "server": "nodemon ./services/bin/www",
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
