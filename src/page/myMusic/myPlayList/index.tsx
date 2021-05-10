@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link, withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import qs from 'querystring';
-import { Table, Input, Comment, List, Pagination, message } from 'antd';
+import { Table, Input, Comment, List, Pagination, message, Avatar } from 'antd';
 import { getPlayList, getMusicDetail, getCommentList, sendComment, commentLike } from '@services/index';
 import moment from 'moment';
 import { checkLogin } from '@utils/checkers';
@@ -132,11 +132,13 @@ class MyMusicContent extends React.Component<IProps, IState> {
   }
 
   renderComment = (item: any) => {
+    console.log(item, '123');
     return <Comment
       key={item.commentId}
-      // actions={item.actions}
-      author={<a className="author">{item.user.nickname}</a>}
-      avatar={item.user.avatarUrl}
+      author={<Link to={`/user/home?id=${item.user.userId}`} className="author" >{item.user.nickname}</Link>}
+      avatar={<div onClick={() => {
+        this.props.history.push(`/user/home?id=${item.user.userId}`);
+      }}><Avatar src={item.user.avatarUrl} /></div>}
       content={
         <div>
           {item.content}
@@ -161,7 +163,7 @@ class MyMusicContent extends React.Component<IProps, IState> {
                 message.error('点赞失败！请稍后重试！')
               }
             }}></i> ({item.likedCount})
-        </a>
+          </a>
         </div>
       )}
     >

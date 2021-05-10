@@ -55,13 +55,13 @@ export default class TopRecommendations extends React.Component {
                 <img src={`${item.picUrl}?param=140y140`} />
                 <Link title={item.name} to={`/playlist?id=${item.id}`} className="msk"></Link>
                 <div className="bottom">
-                  <a className="icon-play f-fr" title="播放"></a>
+                  <a className="icon-play" title="播放"></a>
                   <span className="icon-headset"></span>
                   <span className="nb">{item.playCount < 100000 ? item.playCount : `${String(item.playCount).substring(0, String(item.playCount).length - 4)}万`}</span>
                 </div>
               </div>
               <p className="dec">
-                <Link title={`${item.name}`} className="tit s-fc0" to={`/playlist?id=${item.id}`}>
+                <Link title={`${item.name}`} className="tit" to={`/playlist?id=${item.id}`}>
                   {item.name}
                 </Link>
               </p>

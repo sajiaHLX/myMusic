@@ -1,66 +1,243 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
-import { getUserInfo } from '@services/index';
+import { RouteComponentProps, Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { getUserDetail, getUserRecord, getMusicDetail, getUserPlayList } from '@services/index';
+import qs from 'querystring';
+import { Divider, message, Table } from 'antd';
 import './index.less';
 
 interface IState {
-  userInfo: any
+  userInfo: any,
+  uid: string,
+  weekData: any,
+  maxCount: number,
+  userPlayList: any,
+  followPlayList: any,
 }
 
 interface IProps extends RouteComponentProps {
-
+  MusicList: any;
 }
 
+
+@inject('MusicList')
+@observer
 class UserHome extends React.Component<IProps, IState> {
   state: IState = {
     userInfo: {},
+    uid: qs.parse(this.props.location.search.replace(/^\?/, '')).id as string,
+    weekData: [],
+    maxCount: 0,
+    userPlayList: [],
+    followPlayList: [],
   }
 
   componentDidMount = async () => {
-    const res = await (await getUserInfo()).data;
-    console.log(res, 'as');
+    this.getUserPlayList(this.state.uid);
+    this.getUserRecord();
+    const res = await (await getUserDetail(this.state.uid)).data;
+    this.setState({
+      userInfo: res,
+    });
+  }
+
+  getUserRecord = async () => {
+    const res1 = await (await getUserRecord(this.state.uid)).data;
+    let songList: any = [];
+    if (res1.weekData.length > 0) {
+      res1.weekData.map((item: any) => {
+        item.song.playCount = item.playCount;
+        songList.push(item.song);
+      })
+    }
+    this.setState({
+      weekData: songList,
+      maxCount: songList[0]?.playCount,
+    })
+  }
+
+  getUserPlayList = async (id: string) => {
+    const res = await (await getUserPlayList({ uid: id, offset: 0 })).data;
+    let userPlayList: any = [];
+    let followPlayList: any = [];
+    res.playlist?.map((item: any) => {
+      if (item.subscribed) {
+        followPlayList.push(item);
+      } else {
+        userPlayList.push(item);
+      }
+    })
+    this.setState({
+      userPlayList,
+      followPlayList,
+    });
+  }
+
+  renderColumns = () => {
+    return [
+      {
+        title: '',
+        dataIndex: 'key',
+        width: '75px',
+        render: (_a: string, record: any, index: number) => {
+          return <>
+            <a> {index + 1}</a>
+            <span className={`ply ${record.id === this.props.MusicList.playing?.id ? 'playing' : ''}`} onClick={async () => {
+              const res = await (await getMusicDetail({ id: record.id })).data;
+              this.props.MusicList.checkRepetition(res.songs[0]);
+            }}>&nbsp;</span>
+          </>
+        }
+      },
+      {
+        title: '歌曲标题',
+        dataIndex: 'name',
+        width: '237px',
+        render: (item: any, record: any) => {
+          return <div style={{
+            width: '237px',
+          }} className="text">
+            <Link to={`/song?id=${record.id}`} title={item}>{item}</Link>
+          </div>
+        }
+      },
+      {
+        title: '歌手',
+        dataIndex: 'ar',
+        width: '89px',
+        render: (item: any) => {
+          return <div style={{
+            width: '89px',
+          }} className="text">
+            {this.renderArt(item)}
+          </div>;
+        }
+      },
+      {
+        title: '听歌排行',
+        dataIndex: 'playCount',
+        render: (count: number) => {
+          const { maxCount } = this.state;
+          return <div>
+            <span className="playCount-width" style={{
+              width: `${count / maxCount * 100}%`,
+            }}></span>
+            <span>{count}次</span>
+          </div>
+        }
+      }
+    ];
+  }
+
+
+  renderArt = (ar: any) => {
+    return ar.map((item: { name: string; id: number; }, index: number) => {
+      return <span key={index} title={item.name}>
+        <Link to={`/artist?id=${item.id}`}>{item.name}</Link>
+        {ar.length === index + 1 ? '' : '/'}
+      </span>
+    })
   }
 
   render() {
+    const { userInfo, weekData, userPlayList, followPlayList } = this.state;
+    console.log(userInfo, '123123a ');
     return <div className="user-home">
-      <dl className="m-proifo f-cb" id="head-box">
+      <dl className="m-proifo" id="head-box">
         <dt className="f-pr" id="ava">
-          <img src="http://p1.music.126.net/fxrx6Rx1KtLCAIwfvGY8KQ==/109951165830067125.jpg?param=180y180" />
-          <div className="btm"><a href="/user/update?id=436340822&amp;sub=ava" className="upload">更换头像</a></div>
+          <img src={userInfo?.profile?.avatarUrl} />
         </dt>
         <dd>
-          <div className="name f-cb">
-            <div className="f-cb">
-              <div className="rect" id="newmusician"></div>
-              <h2 id="j-name-wrap" className="wrap f-fl f-cb ">
-                <span className="tit f-ff2 s-fc0 f-thide">法海懂爱了</span>
-                <span className="vip-code-220-1"></span>
-                <span className="lev">8<i className="right"></i></span>
-                <i className="icn"></i>
+          <div className="name">
+            <div>
+              <h2 className="name-wrap">
+                <span className="tit">{userInfo?.profile?.nickname}</span>
+                <span className="lev">{userInfo?.level}<i className="right"></i></span>
               </h2>
             </div>
           </div>
-          <ul className="data" id="tab-box">
-            <li className="fst"><a href="/user/event?id=436340822"><strong id="event_count">0</strong><span>动态</span></a></li>
-            <li><a href="/user/follows?id=436340822"><strong id="follow_count">5</strong><span>关注</span></a></li>
+          <ul className="data">
+            <li className="fst">
+              <strong className="count">{userInfo?.profile?.eventCount}</strong>
+              <span>动态</span>
+            </li>
             <li>
-              <a href="/user/fans?id=436340822">
-                <strong id="fan_count">1</strong>
-                <span>粉丝</span>
-                <i className="u-icn"></i>
-              </a></li>
+              <strong className="count">{userInfo?.profile?.follows}</strong>
+              <span>关注</span>
+            </li>
+            <li>
+              <strong className="count">{userInfo?.profile?.followeds}</strong>
+              <span>粉丝</span>
+            </li>
           </ul>
-          <div className="inf">
-            <span>所在地区：四川省 - 成都市</span>
-          </div>
-          <div className="inf">
-            <span className="tit">社交网络：</span>
-            <ul className="u-logo">
-              <li><i className="u-slg" title="新浪微博"></i></li>
-            </ul>
-          </div>
         </dd>
       </dl>
+      {weekData.length > 0 ? <><div className="u-title">
+        <h3><span className="paihang">听歌排行</span></h3>
+        <div className="nav">
+          <span>最近一周</span>
+        </div>
+      </div>
+        <div className="table-wrap">
+          <Table
+            className="my-table"
+            columns={this.renderColumns()}
+            dataSource={weekData.slice(0, 10)}
+            rowClassName={(record, index) => {
+              let className = 'light-row';
+              if (index % 2 === 1) className = 'dark-row';
+              return className;
+            }}
+            pagination={false}
+          >
+          </Table>
+        </div></> : null}
+      <div className="u-title">
+        <h3><span className="paihang" style={{ color: '#000' }}>我创建的歌单（{userPlayList.length}）</span></h3>
+      </div>
+      <div className="list-wrap">
+        <ul>
+          {userPlayList.map((item: any) => {
+            return <li key={item.id}>
+              <div className="u-cover">
+                <img src={`${item.coverImgUrl}?param=140y140`} />
+                <Link to={`/playlist?id=${item.id}`} className="msk" title={item.name}></Link>
+                <div className="bottom">
+                  <a className="icon-play" title="播放" ></a>
+                  <span className="icon-headset"></span>
+                  <span className="nb">{item.playCount < 100000 ? item.playCount : `${String(item.playCount).substring(0, String(item.playCount).length - 4)}万`}</span>
+                </div>
+              </div>
+              <p className="dec">
+                <Link className="tit" to={`/playlist?id=${item.id}`} title={`${item.name}`}>{item.name}</Link>
+              </p>
+            </li>
+          })}
+        </ul>
+      </div>
+      <div className="u-title">
+        <h3><span className="paihang" style={{ color: '#000' }}>我收藏的歌单（{followPlayList.length}）</span></h3>
+      </div>
+      <div className="list-wrap">
+        <ul>
+          {followPlayList.map((item: any) => {
+            return <li key={item.id}>
+              <div className="u-cover">
+                <img src={`${item.coverImgUrl}?param=140y140`} />
+                <Link to={`/playlist?id=${item.id}`} className="msk" title={item.name}></Link>
+                <div className="bottom">
+                  <a className="icon-play" title="播放" ></a>
+                  <span className="icon-headset"></span>
+                  <span className="nb">{item.playCount < 100000 ? item.playCount : `${String(item.playCount).substring(0, String(item.playCount).length - 4)}万`}</span>
+                </div>
+              </div>
+              <p className="dec">
+                <Link className="tit" to={`/playlist?id=${item.id}`} title={`${item.name}`}>{item.name}</Link>
+              </p>
+            </li>
+          })}
+        </ul>
+      </div>
     </div>
   }
 }

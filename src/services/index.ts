@@ -91,6 +91,19 @@ export const getUserInfoCount = () => axios.get('/user/subcount');
 
 export const getUserInfo = () => axios.get('/user/account');
 
+export const getUserDetail = (uid: string) => axios.get('/user/detail', {
+  params: {
+    uid,
+  }
+});
+
+export const getUserRecord = (uid: string) => axios.get('/user/record', {
+  params: {
+    uid,
+    type: 1,
+  }
+});
+
 export const getUserFollow = (params: { uid: number, offset: number }) => axios.get('/artist/sublist', {
   params: {
     ...params,
@@ -99,7 +112,7 @@ export const getUserFollow = (params: { uid: number, offset: number }) => axios.
   }
 });
 
-export const getUserPlayList = (params: { uid: number, offset: number }) => axios.get(`/user/playlist?timestamp=${Date.now()}`, {
+export const getUserPlayList = (params: { uid: string, offset: number }) => axios.get(`/user/playlist?timestamp=${Date.now()}`, {
   params: {
     ...params,
     offset: params.offset * 100,

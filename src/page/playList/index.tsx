@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import qs from 'querystring';
-import { Table, Input, Comment, List, Pagination, message } from 'antd';
+import { Table, Input, Comment, List, Pagination, message, Avatar } from 'antd';
 import { getPlayList, getMusicDetail, getCommentList, sendComment, commentLike } from '@services/index';
 import moment from 'moment';
 import { checkLogin, getProfile } from '@utils/checkers';
@@ -122,9 +122,10 @@ class PlayList extends React.Component<IProps, IState> {
   renderComment = (item: any) => {
     return <Comment
       key={item.commentId}
-      // actions={item.actions}
-      author={<a className="author">{item.user.nickname}</a>}
-      avatar={item.user.avatarUrl}
+      author={<Link to={`/user/home?id=${item.user.userId}`} className="author" >{item.user.nickname}</Link>}
+      avatar={<div onClick={() => {
+        this.props.history.push(`/user/home?id=${item.user.userId}`);
+      }}><Avatar src={item.user.avatarUrl} /></div>}
       content={
         <div>
           {item.content}

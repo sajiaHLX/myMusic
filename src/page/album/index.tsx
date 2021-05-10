@@ -2,7 +2,7 @@ import React from 'react';
 import { commentLike, getAlbumDetail, getMusicDetail, getAlbumCommentList, sendComment } from '@services/index';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { Table, Input, Comment, List, Pagination, message } from 'antd';
+import { Table, Input, Comment, List, Pagination, message, Avatar } from 'antd';
 import qs from 'querystring';
 import moment from 'moment';
 import './index.less'
@@ -125,9 +125,10 @@ class Album extends React.Component<IProps> {
   renderComment = (item: any) => {
     return <Comment
       key={item.commentId}
-      // actions={item.actions}
-      author={<a className="author">{item.user.nickname}</a>}
-      avatar={item.user.avatarUrl}
+      author={<Link to={`/user/home?id=${item.user.userId}`} className="author" >{item.user.nickname}</Link>}
+      avatar={<div onClick={() => {
+        this.props.history.push(`/user/home?id=${item.user.userId}`);
+      }}><Avatar src={item.user.avatarUrl} /></div>}
       content={
         <div>
           {item.content}

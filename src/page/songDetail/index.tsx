@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import qs from 'querystring';
-import { Input, Comment, List, Pagination, message } from 'antd';
+import { Input, Comment, List, Pagination, message, Avatar } from 'antd';
 import { sendComment, commentLike, getSongCommentList, getMusicDetail, getSongLyric } from '@services/index';
 import moment from 'moment';
 import { checkLogin, getProfile } from '@utils/checkers';
@@ -76,9 +76,10 @@ class SongDetail extends React.Component<IProps, IState> {
   renderComment = (item: any) => {
     return <Comment
       key={item.commentId}
-      // actions={item.actions}
-      author={<a className="author">{item.user.nickname}</a>}
-      avatar={item.user.avatarUrl}
+      author={<Link to={`/user/home?id=${item.user.userId}`} className="author" >{item.user.nickname}</Link>}
+      avatar={<div onClick={() => {
+        this.props.history.push(`/user/home?id=${item.user.userId}`);
+      }}><Avatar src={item.user.avatarUrl} /></div>}
       content={
         <div>
           {item.content}
@@ -88,7 +89,7 @@ class SongDetail extends React.Component<IProps, IState> {
         <div className="time">
           {moment(item.time).format('YYYY-MM-DD HH:mm:ss')}
           <a>
-            <i className={`zan ${item.liked ? 'liked' : ''}`} onClick={async () => {
+            {item.likedCount >= 0 ? <><i className={`zan ${item.liked ? 'liked' : ''}`} onClick={async () => {
               if (!checkLogin()) return message.error('请登录！');
               let t = item.liked ? 0 : 1;
               const res = await (await commentLike({
@@ -102,8 +103,8 @@ class SongDetail extends React.Component<IProps, IState> {
               } else {
                 message.error('点赞失败！请稍后重试！')
               }
-            }}></i> ({item.likedCount})
-        </a>
+            }}></i> ({item.likedCount})</> : null}
+          </a>
         </div>
       )}
     >
